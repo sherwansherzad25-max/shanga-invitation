@@ -8,189 +8,188 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#FAF8F5;
-    --navy:#102A43;
-    --navy-mid:#244E75;
-    --gold:#D4AF5A;
-    --gold-light:#FBF0D9;
-    --line: rgba(212,175,90,0.35);
-  }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{
-    margin:0; padding:0; height:100%;
-    background:var(--navy);
-    font-family:'Cairo', sans-serif;
-    color:var(--gold-light);
-    overflow:hidden;
-  }
+  :root{
+    --paper:#FAF8F5;
+    --navy:#102A43;
+    --navy-mid:#244E75;
+    --gold:#D4AF5A;
+    --gold-light:#FBF0D9;
+    --line: rgba(212,175,90,0.35);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--navy);
+    font-family:'Cairo', sans-serif;
+    color:var(--gold-light);
+    overflow:hidden;
+  }
 
-  #scrollArea{
-    height:100vh; height:100dvh;
-    overflow-y:auto;
-    scroll-snap-type:y mandatory;
-    scroll-behavior:smooth;
-  }
-  section{
-    min-height:100vh; min-height:100dvh;
-    scroll-snap-align:start;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:40px 20px;
-    position:relative; text-align:center;
-    overflow:hidden;
-    background:radial-gradient(circle at 50% 35%, var(--navy-mid) 0%, var(--navy) 75%);
-  }
+  #scrollArea{
+    height:100vh; height:100dvh;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    scroll-behavior:smooth;
+  }
+  section{
+    min-height:100vh; min-height:100dvh;
+    scroll-snap-align:start;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:40px 20px;
+    position:relative; text-align:center;
+    overflow:hidden;
+    background:radial-gradient(circle at 50% 35%, var(--navy-mid) 0%, var(--navy) 75%);
+  }
 
-  /* باکگراوندی لۆگۆی زانکۆکە */
-  .bg-overlay {
-    position: absolute;
-    inset: 0;
-    background-image: url('1.jpg');
-    background-size: 85%;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.05;
-    z-index: 0;
-    pointer-events: none;
-    mix-blend-mode: screen;
-  }
+  /* باکگراوندی لۆگۆی زانکۆکە */
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: url('1.jpg');
+    background-size: 85%;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
 
-  .petals-container{ position:fixed; inset:0; pointer-events:none; z-index:1; }
-  .petal{
-    position:absolute; top:-10%;
-    font-size:18px; opacity:0.75;
-    animation:fall linear infinite;
-  }
-  @keyframes fall{
-    0%{ transform:translateY(0) rotate(0deg); opacity:0.85; }
-    100%{ transform:translateY(105vh) rotate(360deg); opacity:0; }
-  }
+  .petals-container{ position:fixed; inset:0; pointer-events:none; z-index:1; }
+  .petal{
+    position:absolute; top:-10%;
+    font-size:18px; opacity:0.75;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0.85; }
+    100%{ transform:translateY(105vh) rotate(360deg); opacity:0; }
+  }
 
-  .inner{ position:relative; z-index:2; max-width:400px; width:100%; }
+  .inner{ position:relative; z-index:2; max-width:400px; width:100%; }
 
-  .profile-frame{
-    position:relative; width:130px; height:130px; margin:0 auto 15px;
-    border-radius:50%; padding:4px;
-    background:linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-    box-shadow:0 0 25px rgba(212,175,90,0.45);
-  }
-  .profile-img{
-    width:100%; height:100%; border-radius:50%; object-fit:cover;
-    background:var(--navy-mid); display:block;
-  }
-  .grad-cap-icon{
-    position:absolute; top:-12px; right:-8px;
-    width:42px; height:42px;
-    filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-  }
+  .profile-frame{
+    position:relative; width:130px; height:130px; margin:0 auto 15px;
+    border-radius:50%; padding:4px;
+    background:linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+    box-shadow:0 0 25px rgba(212,175,90,0.45);
+  }
+  .profile-img{
+    width:100%; height:100%; border-radius:50%; object-fit:cover;
+    background:var(--navy-mid); display:block;
+  }
+  .grad-cap-icon{
+    position:absolute; top:-12px; right:-8px;
+    width:42px; height:42px;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  }
 
-  .eyebrow{ font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
-  .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
-  
-  /* هێڵی لێدانی دڵی پزیشکی */
-  .divider{ display:flex; align-items:center; justify-content:center; gap:0px; margin:15px auto; }
-  .divider .bar{ width:40px; height:1px; background:var(--gold); }
-  .divider svg{ width:35px; margin:0 8px; color:var(--gold); }
+  .eyebrow{ font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
+  .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
+  
+  /* هێڵی لێدانی دڵی پزیشکی */
+  .divider{ display:flex; align-items:center; justify-content:center; gap:0px; margin:15px auto; }
+  .divider .bar{ width:40px; height:1px; background:var(--gold); }
+  .divider svg{ width:35px; margin:0 8px; color:var(--gold); }
 
-  h1{
-    font-family:'Aref Ruqaa', serif; font-weight:700;
-    font-size:44px; line-height:1.2; margin:5px 0;
-    color:var(--paper);
-    text-shadow:0 0 20px rgba(212,175,90,0.4);
-  }
-  .tagline{ font-family:'Aref Ruqaa', serif; font-size:22px; color:var(--gold-light); }
-  .body-text{ font-size:15px; font-weight:600; line-height:2; color:rgba(250,248,245,0.95); margin:15px auto; }
+  h1{
+    font-family:'Aref Ruqaa', serif; font-weight:700;
+    font-size:44px; line-height:1.2; margin:5px 0;
+    color:var(--paper);
+    text-shadow:0 0 20px rgba(212,175,90,0.4);
+  }
+  .tagline{ font-family:'Aref Ruqaa', serif; font-size:22px; color:var(--gold-light); }
+  .body-text{ font-size:15px; font-weight:600; line-height:2; color:rgba(250,248,245,0.95); margin:15px auto; }
 
-  /* ===== ENHANCED SIGNATURE / NAME EFFECT ===== */
-  .signature-wrap{
-    position:relative; display:inline-flex; align-items:center; justify-content:center;
-    gap:10px; margin-top:14px; padding:10px 26px;
-  }
-  .sig-spark{
-    font-size:16px; color:var(--gold);
-    animation:sparkle 2.2s ease-in-out infinite;
-    filter:drop-shadow(0 0 6px rgba(212,175,90,0.8));
-  }
-  .sig-spark.two{ animation-delay:1.1s; }
-  @keyframes sparkle{
-    0%,100%{ transform:scale(0.7) rotate(0deg); opacity:0.4; }
-    50%{ transform:scale(1.15) rotate(180deg); opacity:1; }
-  }
+  /* ===== ENHANCED SIGNATURE / NAME EFFECT ===== */
+  .signature-wrap{
+    position:relative; display:inline-flex; align-items:center; justify-content:center;
+    gap:10px; margin-top:14px; padding:10px 26px;
+  }
+  .sig-spark{
+    font-size:16px; color:var(--gold);
+    animation:sparkle 2.2s ease-in-out infinite;
+    filter:drop-shadow(0 0 6px rgba(212,175,90,0.8));
+  }
+  .sig-spark.two{ animation-delay:1.1s; }
+  @keyframes sparkle{
+    0%,100%{ transform:scale(0.7) rotate(0deg); opacity:0.4; }
+    50%{ transform:scale(1.15) rotate(180deg); opacity:1; }
+  }
 
-  .signature{
-    position:relative; font-family:'Aref Ruqaa', serif; font-size:32px; font-weight:700; letter-spacing:1px;
-    display:inline-block;
-    background:linear-gradient(90deg, #B8892E 0%, #F7E7B4 22%, #D4AF5A 40%, #FFF6DC 55%, #C99A3E 72%, #F7E7B4 88%, #B8892E 100%);
-    background-size:250% 100%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    color:var(--gold);
-    animation: shimmerName 3.8s linear infinite, floatName 3.2s ease-in-out infinite;
-    text-shadow:0 0 18px rgba(212,175,90,0.55);
-  }
-  @keyframes shimmerName{
-    0%{ background-position: 0% 50%; }
-    100%{ background-position: -250% 50%; }
-  }
-  @keyframes floatName{
-    0%,100%{ transform:translateY(0) scale(1); }
-    50%{ transform:translateY(-3px) scale(1.03); }
-  }
-  .signature::after{
-    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; margin:0 auto; width:0%;
-    background:linear-gradient(90deg, transparent, var(--gold), transparent);
-    animation: sigUnderline 3.8s ease-in-out infinite;
-  }
-  @keyframes sigUnderline{
-    0%,100%{ width:0%; opacity:0; }
-    50%{ width:78%; opacity:1; }
-  }
-  .signature-glow-ring{
-    position:absolute; inset:-14px -30px; border-radius:50px;
-    background:radial-gradient(ellipse at center, rgba(212,175,90,0.22) 0%, rgba(212,175,90,0) 70%);
-    z-index:-1; animation:ringPulse 3.8s ease-in-out infinite;
-  }
-  @keyframes ringPulse{
-    0%,100%{ opacity:0.4; transform:scale(0.94); }
-    50%{ opacity:1; transform:scale(1.08); }
-  }
-  .sig-title{ font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
+  .signature{
+    position:relative; font-family:'Aref Ruqaa', serif; font-size:32px; font-weight:700; letter-spacing:1px;
+    display:inline-block;
+    background:linear-gradient(90deg, #B8892E 0%, #F7E7B4 22%, #D4AF5A 40%, #FFF6DC 55%, #C99A3E 72%, #F7E7B4 88%, #B8892E 100%);
+    background-size:250% 100%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    color:var(--gold);
+    animation: shimmerName 3.8s linear infinite, floatName 3.2s ease-in-out infinite;
+    text-shadow:0 0 18px rgba(212,175,90,0.55);
+  }
+  @keyframes shimmerName{
+    0%{ background-position: 0% 50%; }
+    100%{ background-position: -250% 50%; }
+  }
+  @keyframes floatName{
+    0%,100%{ transform:translateY(0) scale(1); }
+    50%{ transform:translateY(-3px) scale(1.03); }
+  }
+  .signature::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; margin:0 auto; width:0%;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: sigUnderline 3.8s ease-in-out infinite;
+  }
+  @keyframes sigUnderline{
+    0%,100%{ width:0%; opacity:0; }
+    50%{ width:78%; opacity:1; }
+  }
+  .signature-glow-ring{
+    position:absolute; inset:-14px -30px; border-radius:50px;
+    background:radial-gradient(ellipse at center, rgba(212,175,90,0.22) 0%, rgba(212,175,90,0) 70%);
+    z-index:-1; animation:ringPulse 3.8s ease-in-out infinite;
+  }
+  @keyframes ringPulse{
+    0%,100%{ opacity:0.4; transform:scale(0.94); }
+    50%{ opacity:1; transform:scale(1.08); }
+  }
+  .sig-title{ font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
 
-  /* Scratch Cards */
-  .scratch-grid{ display:flex; justify-content:center; gap:10px; margin-top:15px; }
-  .scratch-card{
-    position:relative; flex:1; min-width:100px; max-width:115px; height:130px;
-    border-radius:12px; overflow:hidden; border:1px solid var(--line);
-    background:var(--paper); color:var(--navy); box-shadow:0 10px 20px rgba(0,0,0,0.35);
-  }
-  .scratch-card-content{ height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center; }
-  .scratch-card-content .k{ font-size:11px; color:#555; font-weight:700; margin-bottom:4px; }
-  .scratch-card-content .v{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.4; }
-  canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
-  .scratch-hint-label{
-    position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    pointer-events:none; color:#4A3B10; font-size:11px; font-weight:700; gap:4px;
-  }
+  /* Scratch Cards */
+  .scratch-grid{ display:flex; justify-content:center; gap:10px; margin-top:15px; }
+  .scratch-card{
+    position:relative; flex:1; min-width:100px; max-width:115px; height:130px;
+    border-radius:12px; overflow:hidden; border:1px solid var(--line);
+    background:var(--paper); color:var(--navy); box-shadow:0 10px 20px rgba(0,0,0,0.35);
+  }
+  .scratch-card-content{ height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center; }
+  .scratch-card-content .k{ font-size:11px; color:#555; font-weight:700; margin-bottom:4px; }
+  .scratch-card-content .v{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.4; }
+  canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
+  .scratch-hint-label{
+    position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    pointer-events:none; color:#4A3B10; font-size:11px; font-weight:700; gap:4px;
+  }
 
-  .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; }
-  .t-cell{ background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:8px; padding:8px; width:60px; }
-  .t-cell .n{ font-size:20px; font-weight:700; color:var(--paper); }
-  .t-cell .l{ font-size:10px; opacity:0.85; }
+  .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; }
+  .t-cell{ background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:8px; padding:8px; width:60px; }
+  .t-cell .n{ font-size:20px; font-weight:700; color:var(--paper); }
+  .t-cell .l{ font-size:10px; opacity:0.85; }
 
-  .dots{ position:fixed; top:50%; left:12px; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:10; }
-  .dots span{ width:6px; height:6px; border-radius:50%; background:rgba(251,240,217,0.35); transition:all .3s ease; }
-  .dots span.active{ background:var(--gold); transform:scale(1.4); }
-  .scroll-hint{ position:absolute; bottom:20px; font-size:11px; opacity:0.75; font-weight:600; }
+  .dots{ position:fixed; top:50%; left:12px; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:10; }
+  .dots span{ width:6px; height:6px; border-radius:50%; background:rgba(251,240,217,0.35); transition:all .3s ease; }
+  .dots span.active{ background:var(--gold); transform:scale(1.4); }
+  .scroll-hint{ position:absolute; bottom:20px; font-size:11px; opacity:0.75; font-weight:600; }
 
-  /* دوگمەی تێلیگرام */
-  .telegram-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-    color: var(--navy); text-decoration: none; font-weight: 700; font-size: 15px;
-    padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(212,175,90,0.4);
-    transition: transform 0.2s ease; margin-top: 15px; font-family: 'Cairo', sans-serif;
-  }
-  .telegram-btn:active { transform: scale(0.95); }
-  .telegram-btn svg { width: 22px; height: 22px; fill: currentColor; }
-
+  /* دوگمەی تێلیگرام */
+  .telegram-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+    color: var(--navy); text-decoration: none; font-weight: 700; font-size: 15px;
+    padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(212,175,90,0.4);
+    transition: transform 0.2s ease; margin-top: 15px; font-family: 'Cairo', sans-serif;
+  }
+  .telegram-btn:active { transform: scale(0.95); }
+  .telegram-btn svg { width: 22px; height: 22px; fill: currentColor; }
 </style>
 </head>
 <body>
@@ -200,232 +199,232 @@
 
 <div id="scrollArea">
 
-  <!-- SECTION 1 - Hero -->
-  <section data-i="0">
-    <div class="inner">
-      <div class="profile-frame">
-        <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-        <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
-      </div>
-      <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
-      
-      <!-- Medical ECG Divider -->
-      <div class="divider">
-        <span class="bar"></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span class="bar"></span>
-      </div>
+  <!-- SECTION 1 - Hero -->
+  <section data-i="0">
+    <div class="inner">
+      <div class="profile-frame">
+        <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+        <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+      </div>
+      <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
+      
+      <!-- Medical ECG Divider -->
+      <div class="divider">
+        <span class="bar"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <span class="bar"></span>
+      </div>
 
-      <h1>بانگهێشتنامە</h1>
-      <div class="tagline">ئاهەنگی دەرچوونی پزیشکان</div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+      <h1>بانگهێشتنامە</h1>
+      <div class="tagline">ئاهەنگی دەرچوونی پزیشکان</div>
+    </div>
+    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+  </section>
 
-  <!-- SECTION 2 - Message & Signature -->
-  <section data-i="1">
-    <div class="bg-overlay"></div>
-    <div class="inner">
-      <div class="eyebrow">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
-      <p class="body-text">
-        دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
-        ئامادەبوونی ئێوەی ئازیز ڕازاندنەوەی خۆشییەکانمانە و شکۆ دەبەخشێت بەم ڕۆژە مێژووییەی ژیانم.
-      </p>
+  <!-- SECTION 2 - Message & Signature -->
+  <section data-i="1">
+    <div class="bg-overlay"></div>
+    <div class="inner">
+      <div class="eyebrow">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
+      <p class="body-text">
+        دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
+        ئامادەبوونی ئێوەی ئازیز ڕازاندنەوەی خۆشییەکانمانە و شکۆ دەبەخشێت بەم ڕۆژە مێژووییەی ژیانم.
+      </p>
 
-      <div class="signature-wrap">
-        <div class="signature-glow-ring"></div>
-        <span class="sig-spark">✦</span>
-        <div>
-          <div class="sig-title">د.</div>
-          <div class="signature">شەنگە شێرزاد</div>
-        </div>
-        <span class="sig-spark two">✦</span>
-      </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+      <div class="signature-wrap">
+        <div class="signature-glow-ring"></div>
+        <span class="sig-spark">✦</span>
+        <div>
+          <div class="sig-title">د.</div>
+          <div class="signature">شەنگە شێرزاد</div>
+        </div>
+        <span class="sig-spark two">✦</span>
+      </div>
+    </div>
+    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+  </section>
 
-  <!-- SECTION 3 - Details & Scratch -->
-  <section data-i="2">
-    <div class="bg-overlay"></div>
-    <div class="inner">
-      <div class="eyebrow">ژێنەری کات بژێر</div>
-      <div class="timer-box">
-        <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
-        <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
-        <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
-        <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
-      </div>
+  <!-- SECTION 3 - Details & Scratch -->
+  <section data-i="2">
+    <div class="bg-overlay"></div>
+    <div class="inner">
+      <div class="eyebrow">ژێنەری کات بژێر</div>
+      <div class="timer-box">
+        <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
+        <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
+        <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
+        <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
+      </div>
 
-      <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی زانیارییەکان ✦</div>
-      
-      <div class="scratch-grid">
-        <div class="scratch-card">
-          <div class="scratch-card-content">
-            <div class="k">بەروار</div>
-            <div class="v">پێنجشەممە<br>٨ی تشرینی یەکەم</div>
-          </div>
-          <div class="scratch-hint-label">بسرەوە</div>
-          <canvas class="scratch-canvas"></canvas>
-        </div>
-        <div class="scratch-card">
-          <div class="scratch-card-content">
-            <div class="k">کات</div>
-            <div class="v">کاتژمێر<br>٥:٠٠ی ئێوارە</div>
-          </div>
-          <div class="scratch-hint-label">بسرەوە</div>
-          <canvas class="scratch-canvas"></canvas>
-        </div>
-        <div class="scratch-card">
-          <div class="scratch-card-content">
-            <div class="k">شوێن</div>
-            <div class="v">
-              <!-- لینکی لۆکەیشن بۆ نەخشە -->
-              <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" style="color: var(--navy); text-decoration: none;">
-                زانکۆی سلێمانی<br>کەمپی کۆن 📍
-              </a>
-            </div>
-          </div>
-          <div class="scratch-hint-label">بسرەوە</div>
-          <canvas class="scratch-canvas"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+      <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی زانیارییەکان ✦</div>
+      
+      <div class="scratch-grid">
+        <div class="scratch-card">
+          <div class="scratch-card-content">
+            <div class="k">بەروار</div>
+            <div class="v">پێنجشەممە<br>٨ی تشرینی یەکەم</div>
+          </div>
+          <div class="scratch-hint-label">بسرەوە</div>
+          <canvas class="scratch-canvas"></canvas>
+        </div>
+        <div class="scratch-card">
+          <div class="scratch-card-content">
+            <div class="k">کات</div>
+            <div class="v">کاتژمێر<br>٥:٠٠ی ئێوارە</div>
+          </div>
+          <div class="scratch-hint-label">بسرەوە</div>
+          <canvas class="scratch-canvas"></canvas>
+        </div>
+        <div class="scratch-card">
+          <div class="scratch-card-content">
+            <div class="k">شوێن</div>
+            <div class="v">
+              <!-- لینکی لۆکەیشن بۆ نەخشە -->
+              <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" style="color: var(--navy); text-decoration: none;">
+                زانکۆی سلێمانی<br>کەمپی کۆن 📍
+              </a>
+            </div>
+          </div>
+          <div class="scratch-hint-label">بسرەوە</div>
+          <canvas class="scratch-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+  </section>
 
-  <!-- SECTION 4 - Special Thanks -->
-  <section data-i="3">
-    <div class="inner">
-      <div class="eyebrow">سوپاس و پێزانین ✦</div>
-      <p class="body-text" style="font-size: 14.5px; line-height: 2.1; margin-top: 20px;">
-        هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
-        سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
-      </p>
-      <div class="signature-wrap" style="margin-top: 10px;">
-        <div class="sig-title" style="margin-top: -6px; margin-left: -5px;">د.</div>
-        <div class="signature" style="font-size: 26px;">شەنگە شێرزاد</div>
-      </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+  <!-- SECTION 4 - Special Thanks -->
+  <section data-i="3">
+    <div class="inner">
+      <div class="eyebrow">سوپاس و پێزانین ✦</div>
+      <p class="body-text" style="font-size: 14.5px; line-height: 2.1; margin-top: 20px;">
+        هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
+        سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
+      </p>
+      <div class="signature-wrap" style="margin-top: 10px;">
+        <div class="sig-title" style="margin-top: -6px; margin-left: -5px;">د.</div>
+        <div class="signature" style="font-size: 26px;">شەنگە شێرزاد</div>
+      </div>
+    </div>
+    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+  </section>
 
-  <!-- SECTION 5 - Footer & Telegram -->
-  <section data-i="4">
-    <div class="inner">
-      <h1 style="font-size:36px;">چاوەڕێی هاتنتانین</h1>
-      <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
-      
-      <!-- Telegram Button -->
-      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8C%DA%A5%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%8C%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DA%A9%DB%95%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
-        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        ناردنی پیرۆزبایی
-      </a>
+  <!-- SECTION 5 - Footer & Telegram -->
+  <section data-i="4">
+    <div class="inner">
+      <h1 style="font-size:36px;">چاوەڕێی هاتنتانین</h1>
+      <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
+      
+      <!-- Telegram Button -->
+      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8C%DA%A5%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%8C%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DA%A9%DB%95%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
+        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        ناردنی پیرۆزبایی
+      </a>
 
-      <!-- Medical ECG Divider -->
-      <div class="divider" style="margin-top:25px;">
-        <span class="bar"></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span class="bar"></span>
-      </div>
+      <!-- Medical ECG Divider -->
+      <div class="divider" style="margin-top:25px;">
+        <span class="bar"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <span class="bar"></span>
+      </div>
 
-      <div style="font-size:12px; opacity:0.65; margin-top:20px;">زانکۆی سلێمانی • کۆلێژی پزیشکی</div>
-    </div>
-  </section>
+      <div style="font-size:12px; opacity:0.65; margin-top:20px;">زانکۆی سلێمانی • کۆلێژی پزیشکی</div>
+    </div>
+  </section>
 
 </div>
 
 <script>
-  const petalsBox = document.getElementById('petals');
-  const items = ['🌸', '✨', '🎓', '🌺', '✨'];
-  for(let i=0; i<25; i++){
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.textContent = items[Math.floor(Math.random()*items.length)];
-    p.style.left = Math.random()*100 + '%';
-    p.style.animationDuration = (6 + Math.random()*6) + 's';
-    p.style.animationDelay = Math.random()*5 + 's';
-    petalsBox.appendChild(p);
-  }
+  const petalsBox = document.getElementById('petals');
+  const items = ['🌸', '✨', '🎓', '🌺', '✨'];
+  for(let i=0; i<25; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = items[Math.floor(Math.random()*items.length)];
+    p.style.left = Math.random()*100 + '%';
+    p.style.animationDuration = (6 + Math.random()*6) + 's';
+    p.style.animationDelay = Math.random()*5 + 's';
+    petalsBox.appendChild(p);
+  }
 
-  const sections = document.querySelectorAll('section');
-  const dots = document.querySelectorAll('#dots span');
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const idx = +e.target.dataset.i;
-        dots.forEach((d, i)=> d.classList.toggle('active', i===idx));
-      }
-    });
-  }, { threshold:0.6 });
-  sections.forEach(s=> observer.observe(s));
+  const sections = document.querySelectorAll('section');
+  const dots = document.querySelectorAll('#dots span');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const idx = +e.target.dataset.i;
+        dots.forEach((d, i)=> d.classList.toggle('active', i===idx));
+      }
+    });
+  }, { threshold:0.6 });
+  sections.forEach(s=> observer.observe(s));
 
-  const targetDate = new Date('2026-10-08T17:00:00');
-  function updateTimer(){
-    const now = new Date();
-    let diff = targetDate - now;
-    if(diff < 0) diff = 0;
-    document.getElementById('cd-d').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
-    document.getElementById('cd-h').textContent = String(Math.floor((diff % 86400000)/3600000)).padStart(2,'0');
-    document.getElementById('cd-m').textContent = String(Math.floor((diff % 3600000)/60000)).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(Math.floor((diff % 60000)/1000)).padStart(2,'0');
-  }
-  setInterval(updateTimer, 1000); updateTimer();
+  const targetDate = new Date('2026-10-08T17:00:00');
+  function updateTimer(){
+    const now = new Date();
+    let diff = targetDate - now;
+    if(diff < 0) diff = 0;
+    document.getElementById('cd-d').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(Math.floor((diff % 86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor((diff % 3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor((diff % 60000)/1000)).padStart(2,'0');
+  }
+  setInterval(updateTimer, 1000); updateTimer();
 
-  // Scratch cards setup
-  document.querySelectorAll('.scratch-card').forEach(card => {
-    const canvas = card.querySelector('.scratch-canvas');
-    const ctx = canvas.getContext('2d', {willReadFrequently: true});
-    const label = card.querySelector('.scratch-hint-label');
-    let revealed = false;
+  // Scratch cards setup
+  document.querySelectorAll('.scratch-card').forEach(card => {
+    const canvas = card.querySelector('.scratch-canvas');
+    const ctx = canvas.getContext('2d', {willReadFrequently: true});
+    const label = card.querySelector('.scratch-hint-label');
+    let revealed = false;
 
-    function size(){
-      canvas.width = card.offsetWidth;
-      canvas.height = card.offsetHeight;
-      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-      g.addColorStop(0, '#E6C280');
-      g.addColorStop(0.5, '#F9E8C9');
-      g.addColorStop(1, '#C29B53');
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-    }
-    size();
+    function size(){
+      canvas.width = card.offsetWidth;
+      canvas.height = card.offsetHeight;
+      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      g.addColorStop(0, '#E6C280');
+      g.addColorStop(0.5, '#F9E8C9');
+      g.addColorStop(1, '#C29B53');
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+    size();
 
-    let scratching = false;
-    function scratch(e){
-      if(!scratching || revealed) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    let scratching = false;
+    function scratch(e){
+      if(!scratching || revealed) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, 18, 0, Math.PI * 2);
-      ctx.fill();
-      label.style.opacity = '0';
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 18, 0, Math.PI * 2);
+      ctx.fill();
+      label.style.opacity = '0';
 
-      // Check how much is scratched
-      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-      let cleared = 0, total = 0;
-      for(let i=3; i<data.length; i += 4*15){
-        total++;
-        if(data[i] < 40) cleared++;
-      }
-      if(total > 0 && cleared/total > 0.45){
-        revealed = true;
-        canvas.style.transition = 'opacity 0.4s ease';
-        canvas.style.opacity = '0';
-        setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400); // ڕێگە دەدات بە کلیک کردن لەسەر لینکەکە
-      }
-    }
+      // Check how much is scratched
+      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+      let cleared = 0, total = 0;
+      for(let i=3; i<data.length; i += 4*15){
+        total++;
+        if(data[i] < 40) cleared++;
+      }
+      if(total > 0 && cleared/total > 0.45){
+        revealed = true;
+        canvas.style.transition = 'opacity 0.4s ease';
+        canvas.style.opacity = '0';
+        setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400); // ڕێگە دەدات بە کلیک کردن لەسەر لینکەکە
+      }
+    }
 
-    canvas.addEventListener('mousedown', ()=> scratching = true);
-    window.addEventListener('mouseup', ()=> scratching = false);
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchstart', ()=> scratching = true, {passive:true});
-    window.addEventListener('touchend', ()=> scratching = false);
-    canvas.addEventListener('touchmove', scratch, {passive:true});
-  });
+    canvas.addEventListener('mousedown', ()=> scratching = true);
+    window.addEventListener('mouseup', ()=> scratching = false);
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('touchstart', ()=> scratching = true, {passive:true});
+    window.addEventListener('touchend', ()=> scratching = false);
+    canvas.addEventListener('touchmove', scratch, {passive:true});
+  });
 </script>
 
 </body>
