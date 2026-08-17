@@ -6,7 +6,7 @@
 <title>بانگهێشتنامەی دەرچوونی پزیشک شەنگە شێرزاد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FAF8F5;
@@ -84,8 +84,8 @@
     filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));
   }
 
-  .eyebrow{ font-size:13px; font-weight:600; color:var(--gold); letter-spacing:.05em; }
-  .eyebrow .sub{ display:block; margin-top:3px; font-size:11px; font-weight:400; opacity:0.85; }
+  .eyebrow{ font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
+  .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
   
   /* هێڵی لێدانی دڵی پزیشکی */
   .divider{ display:flex; align-items:center; justify-content:center; gap:0px; margin:15px auto; }
@@ -94,12 +94,12 @@
 
   h1{
     font-family:'Aref Ruqaa', serif; font-weight:700;
-    font-size:46px; line-height:1.2; margin:5px 0;
+    font-size:44px; line-height:1.2; margin:5px 0;
     color:var(--paper);
     text-shadow:0 0 20px rgba(212,175,90,0.4);
   }
   .tagline{ font-family:'Aref Ruqaa', serif; font-size:22px; color:var(--gold-light); }
-  .body-text{ font-size:15px; line-height:1.9; color:rgba(250,248,245,0.92); margin:15px auto; }
+  .body-text{ font-size:15px; font-weight:600; line-height:2; color:rgba(250,248,245,0.95); margin:15px auto; }
 
   /* ===== ENHANCED SIGNATURE / NAME EFFECT ===== */
   .signature-wrap{
@@ -152,7 +152,7 @@
     0%,100%{ opacity:0.4; transform:scale(0.94); }
     50%{ opacity:1; transform:scale(1.08); }
   }
-  .sig-title{ font-size:14px; color:rgba(251,240,217,0.75); letter-spacing:.15em; margin-bottom:2px; }
+  .sig-title{ font-size:14px; color:rgba(251,240,217,0.8); letter-spacing:.15em; margin-bottom:2px; }
 
   /* Scratch Cards */
   .scratch-grid{ display:flex; justify-content:center; gap:10px; margin-top:15px; }
@@ -162,8 +162,8 @@
     background:var(--paper); color:var(--navy); box-shadow:0 10px 20px rgba(0,0,0,0.35);
   }
   .scratch-card-content{ height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center; }
-  .scratch-card-content .k{ font-size:11px; color:#555; font-weight:600; margin-bottom:4px; font-family:'Cairo', sans-serif;}
-  .scratch-card-content .v{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.4; font-family:'Cairo', sans-serif;}
+  .scratch-card-content .k{ font-size:11px; color:#555; font-weight:700; margin-bottom:4px; }
+  .scratch-card-content .v{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.4; }
   canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
   .scratch-hint-label{
     position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -173,12 +173,12 @@
   .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; }
   .t-cell{ background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:8px; padding:8px; width:60px; }
   .t-cell .n{ font-size:20px; font-weight:700; color:var(--paper); }
-  .t-cell .l{ font-size:10px; opacity:0.8; }
+  .t-cell .l{ font-size:10px; opacity:0.85; }
 
   .dots{ position:fixed; top:50%; left:12px; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:10; }
   .dots span{ width:6px; height:6px; border-radius:50%; background:rgba(251,240,217,0.35); transition:all .3s ease; }
   .dots span.active{ background:var(--gold); transform:scale(1.4); }
-  .scroll-hint{ position:absolute; bottom:20px; font-size:11px; opacity:0.75; }
+  .scroll-hint{ position:absolute; bottom:20px; font-size:11px; opacity:0.75; font-weight:600; }
 
   /* دوگمەی تێلیگرام */
   .telegram-btn {
@@ -186,7 +186,7 @@
     background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
     color: var(--navy); text-decoration: none; font-weight: 700; font-size: 15px;
     padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(212,175,90,0.4);
-    transition: transform 0.2s ease; margin-top: 20px; font-family: 'Cairo', sans-serif;
+    transition: transform 0.2s ease; margin-top: 15px; font-family: 'Cairo', sans-serif;
   }
   .telegram-btn:active { transform: scale(0.95); }
   .telegram-btn svg { width: 22px; height: 22px; fill: currentColor; }
@@ -196,7 +196,7 @@
 <body>
 
 <div class="petals-container" id="petals"></div>
-<div class="dots" id="dots"><span class="active"></span><span></span><span></span><span></span></div>
+<div class="dots" id="dots"><span class="active"></span><span></span><span></span><span></span><span></span></div>
 
 <div id="scrollArea">
 
@@ -224,7 +224,7 @@
 
   <!-- SECTION 2 - Message & Signature -->
   <section data-i="1">
-    <div class="bg-overlay"></div> <!-- University Logo Overlay -->
+    <div class="bg-overlay"></div>
     <div class="inner">
       <div class="eyebrow">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
       <p class="body-text">
@@ -247,7 +247,7 @@
 
   <!-- SECTION 3 - Details & Scratch -->
   <section data-i="2">
-    <div class="bg-overlay"></div> <!-- University Logo Overlay -->
+    <div class="bg-overlay"></div>
     <div class="inner">
       <div class="eyebrow">ژێنەری کات بژێر</div>
       <div class="timer-box">
@@ -289,14 +289,29 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- SECTION 4 - Footer & Telegram -->
+  <!-- SECTION 4 - Special Thanks (سڵایدی نوێی سوپاس و پێزانین) -->
   <section data-i="3">
+    <div class="inner">
+      <div class="eyebrow">سوپاس و پێزانین ✦</div>
+      <p class="body-text" style="font-size: 14.5px; line-height: 2.1; margin-top: 20px;">
+        هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
+        سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
+      </p>
+      <div class="signature-wrap" style="margin-top: 10px;">
+        <div class="signature" style="font-size: 26px;">شەنگە شێرزاد</div>
+      </div>
+    </div>
+    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+  </section>
+
+  <!-- SECTION 5 - Footer & Telegram -->
+  <section data-i="4">
     <div class="inner">
       <h1 style="font-size:36px;">چاوەڕێی هاتنتانین</h1>
       <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
       
-      <!-- Telegram Button -->
-      <a href="https://t.me/shany_y" target="_blank" class="telegram-btn">
+      <!-- Telegram Button لەگەڵ دەقی ڕاستەوخۆ ئامادەکراو -->
+      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8C%DA%A5%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%8C%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DA%A9%DB%95%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
         <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         ناردنی پیرۆزبایی
       </a>
