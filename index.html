@@ -6,7 +6,7 @@
 <title>بانگهێشتنامەی دەرچوونی پزیشک شەنگە شێرزاد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;800&family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FAF8F5;
@@ -20,7 +20,7 @@
   html,body{
     margin:0; padding:0; height:100%;
     background:var(--navy);
-    font-family:'Cairo', sans-serif;
+    font-family:'Vazirmatn', sans-serif;
     color:var(--gold-light);
     overflow:hidden;
   }
@@ -84,7 +84,7 @@
     filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));
   }
 
-  .eyebrow{ font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
+  .eyebrow{ font-family:'Noto Kufi Arabic', sans-serif; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
   .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
   
   /* هێڵی لێدانی دڵی پزیشکی */
@@ -93,13 +93,13 @@
   .divider svg{ width:35px; margin:0 8px; color:var(--gold); }
 
   h1{
-    font-family:'Aref Ruqaa', serif; font-weight:700;
-    font-size:44px; line-height:1.2; margin:5px 0;
+    font-family:'Noto Kufi Arabic', sans-serif; font-weight:800;
+    font-size:38px; line-height:1.4; margin:5px 0;
     color:var(--paper);
     text-shadow:0 0 20px rgba(212,175,90,0.4);
   }
-  .tagline{ font-family:'Aref Ruqaa', serif; font-size:22px; color:var(--gold-light); }
-  .body-text{ font-size:15px; font-weight:600; line-height:2; color:rgba(250,248,245,0.95); margin:15px auto; }
+  .tagline{ font-family:'Noto Kufi Arabic', sans-serif; font-size:20px; color:var(--gold-light); font-weight:700; }
+  .body-text{ font-family:'Vazirmatn', sans-serif; font-size:15px; font-weight:600; line-height:2.2; color:rgba(250,248,245,0.95); margin:15px auto; }
 
   /* ===== ENHANCED SIGNATURE / NAME EFFECT ===== */
   .signature-wrap{
@@ -118,7 +118,7 @@
   }
 
   .signature{
-    position:relative; font-family:'Aref Ruqaa', serif; font-size:32px; font-weight:700; letter-spacing:1px;
+    position:relative; font-family:'Noto Kufi Arabic', sans-serif; font-size:28px; font-weight:800; letter-spacing:1px;
     display:inline-block;
     background:linear-gradient(90deg, #B8892E 0%, #F7E7B4 22%, #D4AF5A 40%, #FFF6DC 55%, #C99A3E 72%, #F7E7B4 88%, #B8892E 100%);
     background-size:250% 100%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
@@ -152,7 +152,7 @@
     0%,100%{ opacity:0.4; transform:scale(0.94); }
     50%{ opacity:1; transform:scale(1.08); }
   }
-  .sig-title{ font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
+  .sig-title{ font-family:'Noto Kufi Arabic', sans-serif; font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
 
   /* Scratch Cards */
   .scratch-grid{ display:flex; justify-content:center; gap:10px; margin-top:15px; }
@@ -162,34 +162,35 @@
     background:var(--paper); color:var(--navy); box-shadow:0 10px 20px rgba(0,0,0,0.35);
   }
   .scratch-card-content{ height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px; text-align:center; }
-  .scratch-card-content .k{ font-size:11px; color:#555; font-weight:700; margin-bottom:4px; }
-  .scratch-card-content .v{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.4; }
+  .scratch-card-content .k{ font-family:'Noto Kufi Arabic', sans-serif; font-size:12px; color:#555; font-weight:700; margin-bottom:4px; }
+  .scratch-card-content .v{ font-family:'Vazirmatn', sans-serif; font-size:14px; font-weight:800; color:var(--navy); line-height:1.5; }
   canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
   .scratch-hint-label{
     position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    pointer-events:none; color:#4A3B10; font-size:11px; font-weight:700; gap:4px;
+    pointer-events:none; color:#4A3B10; font-family:'Vazirmatn', sans-serif; font-size:12px; font-weight:800; gap:4px;
   }
 
   .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; }
   .t-cell{ background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:8px; padding:8px; width:60px; }
-  .t-cell .n{ font-size:20px; font-weight:700; color:var(--paper); }
-  .t-cell .l{ font-size:10px; opacity:0.85; }
+  .t-cell .n{ font-family:'Vazirmatn', sans-serif; font-size:22px; font-weight:800; color:var(--paper); }
+  .t-cell .l{ font-family:'Vazirmatn', sans-serif; font-size:11px; opacity:0.85; font-weight:600; }
 
   .dots{ position:fixed; top:50%; left:12px; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:10; }
   .dots span{ width:6px; height:6px; border-radius:50%; background:rgba(251,240,217,0.35); transition:all .3s ease; }
   .dots span.active{ background:var(--gold); transform:scale(1.4); }
-  .scroll-hint{ position:absolute; bottom:20px; font-size:11px; opacity:0.75; font-weight:600; }
+  .scroll-hint{ position:absolute; bottom:20px; font-size:12px; opacity:0.75; font-weight:700; font-family:'Vazirmatn', sans-serif; }
 
   /* دوگمەی تێلیگرام */
   .telegram-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-    color: var(--navy); text-decoration: none; font-weight: 700; font-size: 15px;
+    color: var(--navy); text-decoration: none; font-weight: 800; font-size: 16px;
     padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(212,175,90,0.4);
-    transition: transform 0.2s ease; margin-top: 15px; font-family: 'Cairo', sans-serif;
+    transition: transform 0.2s ease; margin-top: 15px; font-family: 'Vazirmatn', sans-serif;
   }
   .telegram-btn:active { transform: scale(0.95); }
   .telegram-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
 </style>
 </head>
 <body>
@@ -225,7 +226,7 @@
   <section data-i="1">
     <div class="bg-overlay"></div>
     <div class="inner">
-      <div class="eyebrow">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
+      <div class="eyebrow" style="font-size:16px;">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
       <p class="body-text">
         دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
         ئامادەبوونی ئێوەی ئازیز ڕازاندنەوەی خۆشییەکانمانە و شکۆ دەبەخشێت بەم ڕۆژە مێژووییەی ژیانم.
@@ -248,7 +249,7 @@
   <section data-i="2">
     <div class="bg-overlay"></div>
     <div class="inner">
-      <div class="eyebrow">ژێنەری کات بژێر</div>
+      <div class="eyebrow" style="margin-bottom:15px; font-size:16px;">ژێنەری کات بژێر</div>
       <div class="timer-box">
         <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
         <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
@@ -296,14 +297,14 @@
   <!-- SECTION 4 - Special Thanks -->
   <section data-i="3">
     <div class="inner">
-      <div class="eyebrow">سوپاس و پێزانین ✦</div>
-      <p class="body-text" style="font-size: 14.5px; line-height: 2.1; margin-top: 20px;">
+      <div class="eyebrow" style="font-size:16px;">سوپاس و پێزانین ✦</div>
+      <p class="body-text" style="font-size: 15px; line-height: 2.2; margin-top: 20px;">
         هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
         سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
       </p>
       <div class="signature-wrap" style="margin-top: 10px;">
         <div class="sig-title" style="margin-top: -6px; margin-left: -5px;">د.</div>
-        <div class="signature" style="font-size: 26px;">شەنگە شێرزاد</div>
+        <div class="signature" style="font-size: 24px;">شەنگە شێرزاد</div>
       </div>
     </div>
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
@@ -316,7 +317,7 @@
       <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
       
       <!-- Telegram Button -->
-      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8C%DA%A5%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%8C%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DA%A9%DB%95%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
+      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8E%DA%98%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DB%95%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DB%95%D8%AE%D9%88%D8%A7%D8%B2%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
         <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         ناردنی پیرۆزبایی
       </a>
@@ -328,7 +329,7 @@
         <span class="bar"></span>
       </div>
 
-      <div style="font-size:12px; opacity:0.65; margin-top:20px;">زانکۆی سلێمانی • کۆلێژی پزیشکی</div>
+      <div style="font-size:12px; opacity:0.65; margin-top:20px; font-family:'Vazirmatn', sans-serif;">زانکۆی سلێمانی • کۆلێژی پزیشکی</div>
     </div>
   </section>
 
