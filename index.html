@@ -25,6 +25,35 @@
     overflow:hidden;
   }
 
+  /* ===== Loading Screen ===== */
+  .loader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--navy); z-index: 99999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
+  }
+  .ecg-loader { 
+    width: 150px; height: 70px; stroke: var(--gold); fill: none; 
+    stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; 
+    stroke-dasharray: 300; stroke-dashoffset: 300; 
+    animation: drawEcg 2.5s ease-in-out infinite; 
+  }
+  @keyframes drawEcg { 
+    0% { stroke-dashoffset: 300; } 
+    50% { stroke-dashoffset: 0; } 
+    100% { stroke-dashoffset: -300; } 
+  }
+  .loader-text { 
+    font-family: 'Noto Kufi Arabic', sans-serif; font-size: 26px; font-weight: 800; 
+    color: var(--gold); margin-top: 20px; text-shadow: 0 0 15px rgba(212,175,90,0.4); 
+    animation: pulseText 1.5s infinite alternate; 
+  }
+  @keyframes pulseText { 
+    0% { opacity: 0.6; transform: scale(0.98); } 
+    100% { opacity: 1; transform: scale(1.02); } 
+  }
+  .loader-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
   #scrollArea{
     height:100vh; height:100dvh;
     overflow-y:auto;
@@ -41,7 +70,6 @@
     background:radial-gradient(circle at 50% 35%, var(--navy-mid) 0%, var(--navy) 75%);
   }
 
-  /* باکگراوندی لۆگۆی زانکۆکە */
   .bg-overlay {
     position: absolute;
     inset: 0;
@@ -68,11 +96,14 @@
 
   .inner{ position:relative; z-index:2; max-width:400px; width:100%; }
 
+  /* ===== 3D Profile Frame ===== */
   .profile-frame{
     position:relative; width:130px; height:130px; margin:0 auto 15px;
     border-radius:50%; padding:4px;
     background:linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
     box-shadow:0 0 25px rgba(212,175,90,0.45);
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
   }
   .profile-img{
     width:100%; height:100%; border-radius:50%; object-fit:cover;
@@ -82,12 +113,12 @@
     position:absolute; top:-12px; right:-8px;
     width:42px; height:42px;
     filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+    transform: translateZ(20px);
   }
 
   .eyebrow{ font-family:'Noto Kufi Arabic', sans-serif; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
   .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
   
-  /* هێڵی لێدانی دڵی پزیشکی */
   .divider{ display:flex; align-items:center; justify-content:center; gap:0px; margin:15px auto; }
   .divider .bar{ width:40px; height:1px; background:var(--gold); }
   .divider svg{ width:35px; margin:0 8px; color:var(--gold); }
@@ -101,7 +132,6 @@
   .tagline{ font-family:'Noto Kufi Arabic', sans-serif; font-size:20px; color:var(--gold-light); font-weight:700; }
   .body-text{ font-family:'Vazirmatn', sans-serif; font-size:15px; font-weight:600; line-height:2.2; color:rgba(250,248,245,0.95); margin:15px auto; }
 
-  /* ===== ENHANCED SIGNATURE / NAME EFFECT ===== */
   .signature-wrap{
     position:relative; display:inline-flex; align-items:center; justify-content:center;
     gap:10px; margin-top:14px; padding:10px 26px;
@@ -154,7 +184,6 @@
   }
   .sig-title{ font-family:'Noto Kufi Arabic', sans-serif; font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
 
-  /* Scratch Cards */
   .scratch-grid{ display:flex; justify-content:center; gap:10px; margin-top:15px; }
   .scratch-card{
     position:relative; flex:1; min-width:100px; max-width:115px; height:130px;
@@ -180,7 +209,6 @@
   .dots span.active{ background:var(--gold); transform:scale(1.4); }
   .scroll-hint{ position:absolute; bottom:20px; font-size:12px; opacity:0.75; font-weight:700; font-family:'Vazirmatn', sans-serif; }
 
-  /* دوگمەی تێلیگرام */
   .telegram-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
@@ -190,17 +218,22 @@
   }
   .telegram-btn:active { transform: scale(0.95); }
   .telegram-btn svg { width: 22px; height: 22px; fill: currentColor; }
-
 </style>
 </head>
 <body>
+
+<div id="loader" class="loader-overlay">
+  <svg class="ecg-loader" viewBox="0 0 150 70">
+    <polyline points="0,35 20,35 30,15 45,60 65,5 80,45 90,35 150,35" />
+  </svg>
+  <div class="loader-text">د. شەنگە شێرزاد</div>
+</div>
 
 <div class="petals-container" id="petals"></div>
 <div class="dots" id="dots"><span class="active"></span><span></span><span></span><span></span><span></span></div>
 
 <div id="scrollArea">
 
-  <!-- SECTION 1 - Hero -->
   <section data-i="0">
     <div class="inner">
       <div class="profile-frame">
@@ -209,7 +242,6 @@
       </div>
       <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
       
-      <!-- Medical ECG Divider -->
       <div class="divider">
         <span class="bar"></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -222,7 +254,6 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- SECTION 2 - Message & Signature -->
   <section data-i="1">
     <div class="bg-overlay"></div>
     <div class="inner">
@@ -245,7 +276,6 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- SECTION 3 - Details & Scratch -->
   <section data-i="2">
     <div class="bg-overlay"></div>
     <div class="inner">
@@ -280,7 +310,6 @@
           <div class="scratch-card-content">
             <div class="k">شوێن</div>
             <div class="v">
-              <!-- لینکی لۆکەیشن بۆ نەخشە -->
               <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" style="color: var(--navy); text-decoration: none;">
                 زانکۆی سلێمانی<br>کەمپی کۆن 📍
               </a>
@@ -294,7 +323,6 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- SECTION 4 - Special Thanks -->
   <section data-i="3">
     <div class="inner">
       <div class="eyebrow" style="font-size:16px;">سوپاس و پێزانین ✦</div>
@@ -310,32 +338,94 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- SECTION 5 - Footer & Telegram -->
   <section data-i="4">
     <div class="inner">
       <h1 style="font-size:36px;">چاوەڕێی هاتنتانین</h1>
       <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
       
-      <!-- Telegram Button -->
       <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8E%DA%98%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DB%95%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DB%95%D8%AE%D9%88%D8%A7%D8%B2%D9%85.%20%F0%9F%8C%B9" target="_blank" class="telegram-btn">
         <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         ناردنی پیرۆزبایی
       </a>
 
-      <!-- Medical ECG Divider -->
       <div class="divider" style="margin-top:25px;">
         <span class="bar"></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         <span class="bar"></span>
       </div>
-
       <div style="font-size:12px; opacity:0.65; margin-top:20px; font-family:'Vazirmatn', sans-serif;">زانکۆی سلێمانی • کۆلێژی پزیشکی</div>
     </div>
   </section>
-
 </div>
 
 <script>
+  // لادانی شاشەی پێشەکی
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 2800);
+  });
+
+  // 3D Tilt Effect
+  const frame = document.querySelector('.profile-frame');
+  frame.addEventListener('mousemove', (e) => {
+    const rect = frame.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -15;
+    const rotateY = ((x - centerX) / centerX) * 15;
+    frame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+  });
+  frame.addEventListener('mouseleave', () => {
+    frame.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  });
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', (e) => {
+      if (!e.gamma || !e.beta) return;
+      let rotateY = (e.gamma / 45) * 15;
+      let rotateX = ((e.beta - 45) / 45) * -15;
+      rotateY = Math.max(-15, Math.min(15, rotateY));
+      rotateX = Math.max(-15, Math.min(15, rotateX));
+      frame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    }, true);
+  }
+
+  // تەقاندنی کۆنفێتی
+  function triggerConfetti() {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.inset = '0';
+    container.style.pointerEvents = 'none';
+    container.style.zIndex = '9998';
+    container.style.overflow = 'hidden';
+    document.body.appendChild(container);
+    const colors = ['#D4AF5A', '#FBF0D9', '#ffffff', '#B8892E'];
+    for(let i=0; i<85; i++) {
+      const conf = document.createElement('div');
+      conf.style.position = 'absolute';
+      conf.style.left = Math.random() * 100 + 'vw';
+      conf.style.top = '-20px';
+      conf.style.width = Math.random() * 8 + 5 + 'px';
+      conf.style.height = Math.random() * 12 + 6 + 'px';
+      conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      conf.style.opacity = Math.random() + 0.5;
+      conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+      const animDuration = Math.random() * 3 + 2;
+      const delay = Math.random() * 1.5;
+      conf.style.transition = `top ${animDuration}s cubic-bezier(0.1, 0.8, 0.3, 1), transform ${animDuration}s linear, opacity ${animDuration}s ease-in`;
+      container.appendChild(conf);
+      setTimeout(() => {
+        conf.style.top = '110vh';
+        conf.style.transform = `rotate(${Math.random() * 720 + 360}deg)`;
+        conf.style.opacity = '0';
+      }, delay * 1000 + 10);
+    }
+    setTimeout(() => container.remove(), 6000);
+  }
+
+  // گوڵەکان
   const petalsBox = document.getElementById('petals');
   const items = ['🌸', '✨', '🎓', '🌺', '✨'];
   for(let i=0; i<25; i++){
@@ -348,6 +438,7 @@
     petalsBox.appendChild(p);
   }
 
+  // خاڵەکانی لای چەپ
   const sections = document.querySelectorAll('section');
   const dots = document.querySelectorAll('#dots span');
   const observer = new IntersectionObserver((entries)=>{
@@ -360,6 +451,7 @@
   }, { threshold:0.6 });
   sections.forEach(s=> observer.observe(s));
 
+  // کاتژمێر
   const targetDate = new Date('2026-10-08T17:00:00');
   function updateTimer(){
     const now = new Date();
@@ -372,7 +464,8 @@
   }
   setInterval(updateTimer, 1000); updateTimer();
 
-  // Scratch cards setup
+  // سڕینەوەی کارتەکان و ژماردنیان
+  let cardsRevealed = 0;
   document.querySelectorAll('.scratch-card').forEach(card => {
     const canvas = card.querySelector('.scratch-canvas');
     const ctx = canvas.getContext('2d', {willReadFrequently: true});
@@ -404,7 +497,6 @@
       ctx.fill();
       label.style.opacity = '0';
 
-      // Check how much is scratched
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       let cleared = 0, total = 0;
       for(let i=3; i<data.length; i += 4*15){
@@ -415,7 +507,13 @@
         revealed = true;
         canvas.style.transition = 'opacity 0.4s ease';
         canvas.style.opacity = '0';
-        setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400); // ڕێگە دەدات بە کلیک کردن لەسەر لینکەکە
+        setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400);
+        
+        // زیادکردنی ژمارەی کارتە سڕاوەکان و تەقاندنی کۆنفێتی
+        cardsRevealed++;
+        if(cardsRevealed === 3) {
+          setTimeout(triggerConfetti, 400);
+        }
       }
     }
 
