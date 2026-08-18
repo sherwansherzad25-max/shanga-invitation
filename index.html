@@ -117,41 +117,6 @@
   canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
   .scratch-hint-label{ position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; color:#4A3B10; font-family:'Vazirmatn', sans-serif; font-size:12px; font-weight:800; gap:4px; }
 
-  /* ===== 3D Vintage Photo Album ===== */
-  .album-wrapper { position: relative; width: 250px; height: 340px; margin: 15px auto; perspective: 1200px; }
-  .album-page { 
-    position: absolute; top: 0; right: 0; width: 100%; height: 100%; 
-    transform-origin: 100% 50%; /* Hinge on the right */
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in; 
-    border-radius: 12px 4px 4px 12px; 
-    background: var(--paper); 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    cursor: pointer; 
-    box-shadow: -5px 5px 15px rgba(0,0,0,0.25), inset -2px 0 10px rgba(0,0,0,0.05); 
-    border: 1px solid var(--gold); 
-  }
-  .album-page.turned { 
-    transform: rotateY(90deg) scale(0.9); /* Flips out towards user and vanishes */
-    opacity: 0; 
-    pointer-events: none; 
-  }
-  .album-cover { background: linear-gradient(135deg, var(--navy-mid), var(--navy)); border: 2px solid var(--gold); color: var(--gold); }
-  .polaroid { 
-    background: #fff; padding: 10px 10px 45px 10px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
-    width: 82%; height: 82%; position: relative; border: 1px solid #eaeaea; 
-  }
-  .polaroid img { width: 100%; height: 100%; object-fit: cover; background: #eee; border-radius: 2px; }
-  .polaroid-caption { 
-    position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; 
-    font-family: 'Vazirmatn', sans-serif; font-size: 14px; color: #444; font-weight: 800; 
-  }
-  .page-hint { 
-    position: absolute; bottom: 15px; font-size: 13px; color: #999; font-weight: bold; 
-    animation: pulseHint 1.5s infinite alternate; font-family: 'Vazirmatn', sans-serif; 
-  }
-  @keyframes pulseHint { 0%{ transform: translateX(0); } 100%{ transform: translateX(-5px); } }
-
   /* ===== Timeline ===== */
   .timeline { margin: 20px 0; padding-right: 20px; border-right: 2px solid rgba(212,175,90,0.4); text-align: right; }
   .time-item { position: relative; margin-bottom: 25px; }
@@ -195,7 +160,7 @@
 
 <div class="petals-container" id="petals"></div>
 <div class="dots" id="dots">
-  <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
 </div>
 
 <div id="scrollArea">
@@ -226,14 +191,14 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٢. چیرۆکەکە -->
+  <!-- ٢. چیرۆکەکە (بە دەقە نوێیەکەی کە هەڵتبژارد) -->
   <section data-i="1">
     <div class="bg-overlay"></div>
     <div class="inner">
       <div class="eyebrow" style="font-size:16px;">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
       <p class="body-text">
         دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
-        ئامادەبوونی ئێوەی ئازیز ڕازاندنەوەی خۆشییەکانمانە و شکۆ دەبەخشێت بەم ڕۆژە مێژووییەی ژیانم.
+        بێگومان گەورەیی و جوانی ئەم یادە تەنها بە ئامادەبوونی میوانە ئازیز و ڕێزدارەکانمانەوە مانای تەواو دەبەخشێت. بەهای سەرکەوتن لەو کەسانەدایە کە لەگەڵماندا بەشی دەکەن، بۆیە بە گەورەیی ئێوەوە ئەم ڕۆژە دەبێتە مێژوویەکی لەبیرنەکراو. بە شانازییەکی زۆرەوە بانگهێشتتان دەکەین، و هاتنتان گەورەترین ڕێزلێنان و دەستخۆشییە بۆ ئێمە.
       </p>
       <div class="signature-wrap">
         <div class="signature-glow-ring"></div>
@@ -287,21 +252,8 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٤. گەشتێک بۆ یادەوەرییەکان (ئەلبوومی 3D) -->
+  <!-- ٤. پڕۆگرامی ئاهەنگەکە (Timeline) -->
   <section data-i="3">
-    <div class="bg-overlay"></div>
-    <div class="inner">
-      <div class="eyebrow" style="font-size:16px;">گەشتێک بۆ یادەوەرییەکان 📸</div>
-      
-      <!-- کۆنتەینەری ئەلبوومەکە کە بە جاڤاسکڕێپت وێنەکانی تێدەکرێت -->
-      <div class="album-wrapper" id="albumContainer"></div>
-
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
-
-  <!-- ٥. پڕۆگرامی ئاهەنگەکە (Timeline) -->
-  <section data-i="4">
     <div class="inner">
       <div class="eyebrow" style="font-size:18px;">پڕۆگرامی ئاهەنگەکە 📋</div>
       <div class="timeline">
@@ -326,8 +278,8 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٦. سوپاس و پێزانین -->
-  <section data-i="5">
+  <!-- ٥. سوپاس و پێزانین -->
+  <section data-i="4">
     <div class="inner">
       <div class="eyebrow" style="font-size:16px;">سوپاس و پێزانین ✦</div>
       <p class="body-text" style="font-size: 15px; line-height: 2.2; margin-top: 20px;">
@@ -338,8 +290,8 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٧. کۆتایی، وێنە، شەیرکردن -->
-  <section data-i="6">
+  <!-- ٦. کۆتایی، وێنە، شەیرکردن -->
+  <section data-i="5">
     <div class="inner">
       <img src="2.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
       <h1 style="font-size:26px;">چاوەڕێی هاتنتانین</h1>
@@ -435,60 +387,15 @@
     setTimeout(() => container.remove(), 6000);
   }
 
-  // Generate 3D Album
-  function initAlbum() {
-    const container = document.getElementById('albumContainer');
-    let html = '';
-    
-    // 1. Back Cover
-    html += `
-    <div class="album-page" style="z-index: 10; background: var(--navy-mid); border: 2px solid var(--gold);">
-      <svg viewBox="0 0 24 24" style="width:40px; height:40px; fill:var(--gold); margin-bottom:15px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-      <div style="color:var(--gold-light); font-weight:800; font-size:16px;">کۆتایی ئەلبوومەکە 🌸</div>
-      <button onclick="resetAlbum(event)" class="btn-action btn-secondary" style="margin-top:20px; width:160px; padding:8px;">سەیرکردنەوە 🔄</button>
-    </div>`;
-    
-    // 2. Photos (10 Pages)
-    for(let i=10; i>=1; i--) {
-      const imgNum = i + 2; // 3 to 12
-      html += `
-      <div class="album-page" style="z-index: ${10 + (11-i)};" onclick="turnPage(this)">
-        <div class="polaroid">
-          <img src="${imgNum}.jpg" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+${imgNum}'">
-          <div class="polaroid-caption">یادەوەری ${i}</div>
-        </div>
-        <div class="page-hint">هەڵیدەرەوە 👈</div>
-      </div>`;
-    }
-
-    // 3. Front Cover
-    html += `
-    <div class="album-page album-cover" style="z-index: 30;" onclick="turnPage(this)">
-       <svg viewBox="0 0 24 24" style="width:45px; height:45px; fill:var(--gold); margin-bottom:15px;"><path d="M21 4H7a2 2 0 00-2 2v12a2 2 0 002 2h14a1 1 0 001-1V5a1 1 0 00-1-1zm-1 13H7V6h13v11zM3 18V6a2 2 0 012-2h1V2H5a4 4 0 00-4 4v14a4 4 0 004 4h1v-2H5a2 2 0 01-2-2z"/></svg>
-       <h3 style="font-family:'Noto Kufi Arabic', sans-serif; font-size:20px; margin:5px 0; color:var(--gold-light);">گەشتێک بۆ<br>یادەوەرییەکان</h3>
-       <p style="font-size:13px; opacity:0.8; margin-top:5px; margin-bottom:20px;">ئایا دەتەوێت ئەلبوومەکە بکەیتەوە؟</p>
-       <button class="btn-action btn-secondary" style="width:140px; padding:8px; font-size:14px; pointer-events:none;">کردنەوە 📖</button>
-    </div>`;
-
-    container.innerHTML = html;
-  }
-  initAlbum();
-
-  // Album Turn Functions
-  window.turnPage = function(el) { el.classList.add('turned'); };
-  window.resetAlbum = function(e) {
-    if(e) e.stopPropagation();
-    const pages = Array.from(document.querySelectorAll('.album-page.turned'));
-    pages.reverse().forEach((p, index) => {
-      setTimeout(() => { p.classList.remove('turned'); }, index * 120); // cascading flip back
-    });
-  };
-
   // Dynamic Particles
   const petalsBox = document.getElementById('petals');
   const particleSets = [
-    ['🎓', '✨', '🌟'], ['✨', '🩺', '💛'], ['⏳', '✨', '🗓️'], 
-    ['📸', '✨', '🎞️'], ['📋', '✨', '🎓'], ['🌸', '🌺', '✨'], ['🎓', '🎉', '✨']
+    ['🎓', '✨', '🌟'], // Cover
+    ['✨', '🩺', '💛'], // Story
+    ['⏳', '✨', '🗓️'], // Timer
+    ['📋', '✨', '🎓'], // Timeline
+    ['🌸', '🌺', '✨'], // Thanks
+    ['🎓', '🎉', '✨']  // Final
   ];
   function setParticles(index) {
     petalsBox.innerHTML = '';
