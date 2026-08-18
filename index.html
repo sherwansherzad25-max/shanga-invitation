@@ -123,16 +123,20 @@
     position: relative;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d; /* Safari Fix */
   }
   .profile-scene.is-flipped .profile-flip-card {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg); /* Safari Fix */
   }
   .profile-card-face {
     position: absolute; width: 100%; height: 100%;
     backface-visibility: hidden; 
+    -webkit-backface-visibility: hidden; /* زۆر گرنگە بۆ نەهێشتنی شاشەی سپی لە ئایفۆن */
     border-radius: 50%; padding: 4px;
     box-shadow: 0 0 25px rgba(212,175,90,0.45);
     display: flex; align-items: center; justify-content: center;
+    background-color: var(--navy);
   }
   .profile-card-front { 
     background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
@@ -140,10 +144,11 @@
   
   .profile-card-back {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
     background: var(--navy); 
     border: 3px solid var(--gold);
     flex-direction: column;
-    padding: 0 !important; /* لابردنی بۆشایی بۆ وێنەکە */
+    padding: 0 !important; 
     overflow: hidden;
   }
   
@@ -289,7 +294,7 @@
              <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
           </div>
           <div class="profile-card-face profile-card-back">
-            <img src="71710.png" alt="Medical 2026" class="profile-img">
+            <img src="71710.png" alt="Medical 2026" class="profile-img" onerror="this.onerror=null; this.src='71710.PNG';">
           </div>
         </div>
       </div>
