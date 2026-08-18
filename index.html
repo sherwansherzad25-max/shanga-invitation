@@ -54,6 +54,22 @@
   }
   .loader-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
+  /* ===== ECG Scroll Progress ===== */
+  .scroll-progress-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 9998;
+    background: rgba(212,175,90,0.1);
+  }
+  .scroll-progress-bar {
+    height: 100%; background: var(--gold); width: 0%;
+    box-shadow: 0 0 10px var(--gold);
+    transition: width 0.2s ease-out;
+    position: relative;
+  }
+  .scroll-progress-bar::after {
+    content: ''; position: absolute; right: -2px; top: -2px; width: 8px; height: 8px;
+    background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 20px var(--gold);
+  }
+
   #scrollArea{
     height:100vh; height:100dvh;
     overflow-y:auto;
@@ -96,15 +112,41 @@
 
   .inner{ position:relative; z-index:2; max-width:400px; width:100%; }
 
-  /* ===== 3D Profile Frame ===== */
-  .profile-frame{
-    position:relative; width:130px; height:130px; margin:0 auto 15px;
-    border-radius:50%; padding:4px;
-    background:linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-    box-shadow:0 0 25px rgba(212,175,90,0.45);
-    transition: transform 0.1s ease-out;
+  /* ===== 3D Flipping Profile Frame ===== */
+  .profile-scene {
+    width: 140px; height: 140px; margin: 0 auto 15px;
+    perspective: 1000px; 
+    cursor: pointer;
+  }
+  .profile-flip-card {
+    width: 100%; height: 100%;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
   }
+  .profile-scene.is-flipped .profile-flip-card {
+    transform: rotateY(180deg);
+  }
+  .profile-card-face {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden; 
+    border-radius: 50%; padding: 4px;
+    box-shadow: 0 0 25px rgba(212,175,90,0.45);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .profile-card-front { 
+    background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  
+  .profile-card-back {
+    transform: rotateY(180deg);
+    background: var(--navy); 
+    border: 3px solid var(--gold);
+    flex-direction: column;
+    padding: 0 !important; /* لابردنی بۆشایی بۆ وێنەکە */
+    overflow: hidden;
+  }
+  
   .profile-img{
     width:100%; height:100%; border-radius:50%; object-fit:cover;
     background:var(--navy-mid); display:block;
@@ -229,6 +271,10 @@
   <div class="loader-text">د. شەنگە شێرزاد</div>
 </div>
 
+<div class="scroll-progress-container">
+  <div class="scroll-progress-bar" id="scrollProgress"></div>
+</div>
+
 <div class="petals-container" id="petals"></div>
 <div class="dots" id="dots"><span class="active"></span><span></span><span></span><span></span><span></span></div>
 
@@ -236,10 +282,18 @@
 
   <section data-i="0">
     <div class="inner">
-      <div class="profile-frame">
-        <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-        <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+      <div class="profile-scene" id="profileScene">
+        <div class="profile-flip-card">
+          <div class="profile-card-face profile-card-front">
+             <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+             <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+          </div>
+          <div class="profile-card-face profile-card-back">
+            <img src="71710.png" alt="Medical 2026" class="profile-img">
+          </div>
+        </div>
       </div>
+
       <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
       
       <div class="divider">
@@ -359,38 +413,27 @@
 </div>
 
 <script>
-  // لادانی شاشەی پێشەکی
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('loader').classList.add('hidden');
-    }, 2800);
+  // چارەسەری کێشەی مانەوەی شاشەی پێشەکی لە مۆبایل
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if(loader) loader.classList.add('hidden');
+  }, 2800);
+
+  // هێڵی سکڕۆڵ (ECG Progress)
+  const scrollArea = document.getElementById('scrollArea');
+  const scrollProgress = document.getElementById('scrollProgress');
+  scrollArea.addEventListener('scroll', () => {
+    const scrollTop = scrollArea.scrollTop;
+    const docHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    scrollProgress.style.width = scrollPercent + '%';
   });
 
-  // 3D Tilt Effect
-  const frame = document.querySelector('.profile-frame');
-  frame.addEventListener('mousemove', (e) => {
-    const rect = frame.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -15;
-    const rotateY = ((x - centerX) / centerX) * 15;
-    frame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+  // باجی پزیشکی (Flip Card)
+  const profileScene = document.getElementById('profileScene');
+  profileScene.addEventListener('click', () => {
+    profileScene.classList.toggle('is-flipped');
   });
-  frame.addEventListener('mouseleave', () => {
-    frame.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-  });
-  if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', (e) => {
-      if (!e.gamma || !e.beta) return;
-      let rotateY = (e.gamma / 45) * 15;
-      let rotateX = ((e.beta - 45) / 45) * -15;
-      rotateY = Math.max(-15, Math.min(15, rotateY));
-      rotateX = Math.max(-15, Math.min(15, rotateX));
-      frame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    }, true);
-  }
 
   // تەقاندنی کۆنفێتی
   function triggerConfetti() {
@@ -464,7 +507,7 @@
   }
   setInterval(updateTimer, 1000); updateTimer();
 
-  // سڕینەوەی کارتەکان و ژماردنیان
+  // سڕینەوەی کارتەکان
   let cardsRevealed = 0;
   document.querySelectorAll('.scratch-card').forEach(card => {
     const canvas = card.querySelector('.scratch-canvas');
@@ -509,7 +552,6 @@
         canvas.style.opacity = '0';
         setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400);
         
-        // زیادکردنی ژمارەی کارتە سڕاوەکان و تەقاندنی کۆنفێتی
         cardsRevealed++;
         if(cardsRevealed === 3) {
           setTimeout(triggerConfetti, 400);
