@@ -123,16 +123,16 @@
     position: relative;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d; /* Safari Fix */
+    -webkit-transform-style: preserve-3d;
   }
   .profile-scene.is-flipped .profile-flip-card {
     transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg); /* Safari Fix */
+    -webkit-transform: rotateY(180deg);
   }
   .profile-card-face {
     position: absolute; width: 100%; height: 100%;
     backface-visibility: hidden; 
-    -webkit-backface-visibility: hidden; /* زۆر گرنگە بۆ نەهێشتنی شاشەی سپی لە ئایفۆن */
+    -webkit-backface-visibility: hidden; 
     border-radius: 50%; padding: 4px;
     box-shadow: 0 0 25px rgba(212,175,90,0.45);
     display: flex; align-items: center; justify-content: center;
@@ -293,8 +293,9 @@
              <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
              <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
           </div>
+          <!-- بەکارهێنانی لینکی ڕاستەوخۆ بۆ شکاندنی کێشەی کەیش -->
           <div class="profile-card-face profile-card-back">
-            <img src="71710.png" alt="Medical 2026" class="profile-img" onerror="this.onerror=null; this.src='71710.PNG';">
+            <img src="https://raw.githubusercontent.com/sherwansherzad25-max/shanga-invitation/main/71710.png" alt="" class="profile-img">
           </div>
         </div>
       </div>
@@ -418,13 +419,11 @@
 </div>
 
 <script>
-  // چارەسەری کێشەی مانەوەی شاشەی پێشەکی لە مۆبایل
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if(loader) loader.classList.add('hidden');
   }, 2800);
 
-  // هێڵی سکڕۆڵ (ECG Progress)
   const scrollArea = document.getElementById('scrollArea');
   const scrollProgress = document.getElementById('scrollProgress');
   scrollArea.addEventListener('scroll', () => {
@@ -434,13 +433,11 @@
     scrollProgress.style.width = scrollPercent + '%';
   });
 
-  // باجی پزیشکی (Flip Card)
   const profileScene = document.getElementById('profileScene');
   profileScene.addEventListener('click', () => {
     profileScene.classList.toggle('is-flipped');
   });
 
-  // تەقاندنی کۆنفێتی
   function triggerConfetti() {
     const container = document.createElement('div');
     container.style.position = 'fixed';
@@ -473,7 +470,6 @@
     setTimeout(() => container.remove(), 6000);
   }
 
-  // گوڵەکان
   const petalsBox = document.getElementById('petals');
   const items = ['🌸', '✨', '🎓', '🌺', '✨'];
   for(let i=0; i<25; i++){
@@ -486,7 +482,6 @@
     petalsBox.appendChild(p);
   }
 
-  // خاڵەکانی لای چەپ
   const sections = document.querySelectorAll('section');
   const dots = document.querySelectorAll('#dots span');
   const observer = new IntersectionObserver((entries)=>{
@@ -499,7 +494,6 @@
   }, { threshold:0.6 });
   sections.forEach(s=> observer.observe(s));
 
-  // کاتژمێر
   const targetDate = new Date('2026-10-08T17:00:00');
   function updateTimer(){
     const now = new Date();
@@ -512,7 +506,6 @@
   }
   setInterval(updateTimer, 1000); updateTimer();
 
-  // سڕینەوەی کارتەکان
   let cardsRevealed = 0;
   document.querySelectorAll('.scratch-card').forEach(card => {
     const canvas = card.querySelector('.scratch-canvas');
