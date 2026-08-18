@@ -112,7 +112,7 @@
 
   .inner{ position:relative; z-index:2; max-width:400px; width:100%; }
 
-  /* ===== 3D Flipping Profile Frame ===== */
+  /* ===== 3D Flipping Profile Frame - BUG FIXES ===== */
   .profile-scene {
     width: 140px; height: 140px; margin: 0 auto 15px;
     perspective: 1000px; 
@@ -133,6 +133,7 @@
     position: absolute; width: 100%; height: 100%;
     backface-visibility: hidden; 
     -webkit-backface-visibility: hidden; 
+    -webkit-transform: translate3d(0,0,0); /* Force GPU render for iOS */
     border-radius: 50%; padding: 4px;
     box-shadow: 0 0 25px rgba(212,175,90,0.45);
     display: flex; align-items: center; justify-content: center;
@@ -147,14 +148,13 @@
     -webkit-transform: rotateY(180deg);
     background: var(--navy); 
     border: 3px solid var(--gold);
-    flex-direction: column;
-    padding: 0 !important; 
-    overflow: hidden;
+    padding: 0; /* لابردنی overflow: hidden بۆ ئەوەی لە ئایفۆن کێشە دروست نەکات */
   }
   
   .profile-img{
     width:100%; height:100%; border-radius:50%; object-fit:cover;
     background:var(--navy-mid); display:block;
+    -webkit-backface-visibility: hidden; /* زیادکرا بۆ وێنەکەش */
   }
   .grad-cap-icon{
     position:absolute; top:-12px; right:-8px;
@@ -289,14 +289,13 @@
     <div class="inner">
       <div class="profile-scene" id="profileScene">
         <div class="profile-flip-card">
-          <!-- دیوی پێشەوە (وێنەکەی خۆی) -->
           <div class="profile-card-face profile-card-front">
              <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
              <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
           </div>
           
-          <!-- دیوی پشتەوە (گۆڕدرا بۆ باکگراوند بۆ ئەوەی لە هەموو مۆبایلێک کار بکات) -->
-          <div class="profile-card-face profile-card-back" style="background-image: url('71710.png?v=3'); background-size: cover; background-position: center; border-radius: 50%;">
+          <div class="profile-card-face profile-card-back">
+            <img src="https://raw.githubusercontent.com/sherwansherzad25-max/shanga-invitation/main/71710.png" alt="Medical Logo" class="profile-img">
           </div>
         </div>
       </div>
