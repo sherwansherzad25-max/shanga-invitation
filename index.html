@@ -117,13 +117,40 @@
   canvas.scratch-canvas{ position:absolute; inset:0; z-index:3; touch-action:none; cursor:pointer; }
   .scratch-hint-label{ position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; color:#4A3B10; font-family:'Vazirmatn', sans-serif; font-size:12px; font-weight:800; gap:4px; }
 
-  /* ===== Photo Carousel ===== */
-  .gallery-wrap { width: 100vw; overflow: hidden; margin-top: 15px; }
-  .gallery-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding: 20px 40px; scrollbar-width: none; scroll-behavior: smooth; }
-  .gallery-container::-webkit-scrollbar { display: none; }
-  .gallery-item { flex: 0 0 240px; height: 320px; scroll-snap-align: center; border-radius: 16px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.4); border: 2px solid var(--gold); background: var(--navy-mid); }
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .swipe-hint { font-family: 'Vazirmatn', sans-serif; font-size: 12px; opacity: 0.7; margin-bottom: 5px; color: var(--gold-light); }
+  /* ===== 3D Vintage Photo Album ===== */
+  .album-wrapper { position: relative; width: 250px; height: 340px; margin: 15px auto; perspective: 1200px; }
+  .album-page { 
+    position: absolute; top: 0; right: 0; width: 100%; height: 100%; 
+    transform-origin: 100% 50%; /* Hinge on the right */
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in; 
+    border-radius: 12px 4px 4px 12px; 
+    background: var(--paper); 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    cursor: pointer; 
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.25), inset -2px 0 10px rgba(0,0,0,0.05); 
+    border: 1px solid var(--gold); 
+  }
+  .album-page.turned { 
+    transform: rotateY(90deg) scale(0.9); /* Flips out towards user and vanishes */
+    opacity: 0; 
+    pointer-events: none; 
+  }
+  .album-cover { background: linear-gradient(135deg, var(--navy-mid), var(--navy)); border: 2px solid var(--gold); color: var(--gold); }
+  .polaroid { 
+    background: #fff; padding: 10px 10px 45px 10px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+    width: 82%; height: 82%; position: relative; border: 1px solid #eaeaea; 
+  }
+  .polaroid img { width: 100%; height: 100%; object-fit: cover; background: #eee; border-radius: 2px; }
+  .polaroid-caption { 
+    position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; 
+    font-family: 'Vazirmatn', sans-serif; font-size: 14px; color: #444; font-weight: 800; 
+  }
+  .page-hint { 
+    position: absolute; bottom: 15px; font-size: 13px; color: #999; font-weight: bold; 
+    animation: pulseHint 1.5s infinite alternate; font-family: 'Vazirmatn', sans-serif; 
+  }
+  @keyframes pulseHint { 0%{ transform: translateX(0); } 100%{ transform: translateX(-5px); } }
 
   /* ===== Timeline ===== */
   .timeline { margin: 20px 0; padding-right: 20px; border-right: 2px solid rgba(212,175,90,0.4); text-align: right; }
@@ -247,12 +274,10 @@
       </div>
 
       <div class="btn-group">
-        <!-- گۆڕینی لینکەکە بۆ لینکی سەرەکی گووگڵ ماپ بۆ نەهێشتنی کێشەی فایەربەیس -->
         <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-primary">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
           نەخشەی شوێنی ئاهەنگ
         </a>
-        <!-- Add to Google Calendar Link -->
         <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ئاهەنگی+دەرچوونی+دکتۆرە+شەنگە+شێرزاد&dates=20261008T140000Z/20261008T170000Z&details=ئاهەنگی+دەرچوونی+پزیشکان+لە+کەمپی+کۆنی+زانکۆی+سلێمانی&location=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-secondary">
           <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
           زیادکردن بۆ ڕۆژژمێر
@@ -262,26 +287,15 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٤. گەشتێک بۆ یادەوەرییەکان -->
+  <!-- ٤. گەشتێک بۆ یادەوەرییەکان (ئەلبوومی 3D) -->
   <section data-i="3">
     <div class="bg-overlay"></div>
-    <div class="inner" style="max-width: 100%;">
+    <div class="inner">
       <div class="eyebrow" style="font-size:16px;">گەشتێک بۆ یادەوەرییەکان 📸</div>
-      <div class="swipe-hint">بۆ لای ڕاست و چەپ بیجوڵێنە ↔️</div>
-      <div class="gallery-wrap">
-        <div class="gallery-container">
-          <div class="gallery-item"><img src="3.jpg" alt="یادەوەری ١" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+3'"></div>
-          <div class="gallery-item"><img src="4.jpg" alt="یادەوەری ٢" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+4'"></div>
-          <div class="gallery-item"><img src="5.jpg" alt="یادەوەری ٣" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+5'"></div>
-          <div class="gallery-item"><img src="6.jpg" alt="یادەوەری ٤" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+6'"></div>
-          <div class="gallery-item"><img src="7.jpg" alt="یادەوەری ٥" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+7'"></div>
-          <div class="gallery-item"><img src="8.jpg" alt="یادەوەری ٦" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+8'"></div>
-          <div class="gallery-item"><img src="9.jpg" alt="یادەوەری ٧" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+9'"></div>
-          <div class="gallery-item"><img src="10.jpg" alt="یادەوەری ٨" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+10'"></div>
-          <div class="gallery-item"><img src="11.jpg" alt="یادەوەری ٩" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+11'"></div>
-          <div class="gallery-item"><img src="12.jpg" alt="یادەوەری ١٠" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+12'"></div>
-        </div>
-      </div>
+      
+      <!-- کۆنتەینەری ئەلبوومەکە کە بە جاڤاسکڕێپت وێنەکانی تێدەکرێت -->
+      <div class="album-wrapper" id="albumContainer"></div>
+
     </div>
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
@@ -377,13 +391,9 @@
   }
   
   musicToggle.addEventListener('click', toggleMusic);
-  
-  // Auto-play on first interaction
-  document.body.addEventListener('click', () => {
-    if(!isPlaying) toggleMusic();
-  }, { once: true });
+  document.body.addEventListener('click', () => { if(!isPlaying) toggleMusic(); }, { once: true });
 
-  // Share Links Dynamic Generation
+  // Share Links
   const pageUrl = window.location.href;
   const shareText = encodeURIComponent('فەرموون بۆ بینینی بانگهێشتنامەی دەرچوونی د. شەنگە شێرزاد 🎓✨\n');
   document.getElementById('share-wa').href = 'https://api.whatsapp.com/send?text=' + shareText + pageUrl;
@@ -396,17 +406,16 @@
   scrollArea.addEventListener('scroll', () => {
     const scrollTop = scrollArea.scrollTop;
     const docHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
-    scrollProgress.style.width = scrollPercent + '%';
+    scrollProgress.style.width = ((scrollTop / docHeight) * 100) + '%';
   });
 
-  // Flip Card
+  // Flip Profile Card
   const profileScene = document.getElementById('profileScene');
   profileScene.addEventListener('click', () => {
     profileScene.classList.toggle('is-flipped');
   });
 
-  // Final Confetti Function
+  // Final Confetti
   function triggerConfetti() {
     const container = document.createElement('div');
     container.style.position = 'fixed'; container.style.inset = '0'; container.style.pointerEvents = 'none'; container.style.zIndex = '9998'; container.style.overflow = 'hidden';
@@ -426,29 +435,69 @@
     setTimeout(() => container.remove(), 6000);
   }
 
-  // Dynamic Particles based on section
+  // Generate 3D Album
+  function initAlbum() {
+    const container = document.getElementById('albumContainer');
+    let html = '';
+    
+    // 1. Back Cover
+    html += `
+    <div class="album-page" style="z-index: 10; background: var(--navy-mid); border: 2px solid var(--gold);">
+      <svg viewBox="0 0 24 24" style="width:40px; height:40px; fill:var(--gold); margin-bottom:15px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+      <div style="color:var(--gold-light); font-weight:800; font-size:16px;">کۆتایی ئەلبوومەکە 🌸</div>
+      <button onclick="resetAlbum(event)" class="btn-action btn-secondary" style="margin-top:20px; width:160px; padding:8px;">سەیرکردنەوە 🔄</button>
+    </div>`;
+    
+    // 2. Photos (10 Pages)
+    for(let i=10; i>=1; i--) {
+      const imgNum = i + 2; // 3 to 12
+      html += `
+      <div class="album-page" style="z-index: ${10 + (11-i)};" onclick="turnPage(this)">
+        <div class="polaroid">
+          <img src="${imgNum}.jpg" onerror="this.src='https://via.placeholder.com/240x320/244E75/D4AF5A?text=Wena+${imgNum}'">
+          <div class="polaroid-caption">یادەوەری ${i}</div>
+        </div>
+        <div class="page-hint">هەڵیدەرەوە 👈</div>
+      </div>`;
+    }
+
+    // 3. Front Cover
+    html += `
+    <div class="album-page album-cover" style="z-index: 30;" onclick="turnPage(this)">
+       <svg viewBox="0 0 24 24" style="width:45px; height:45px; fill:var(--gold); margin-bottom:15px;"><path d="M21 4H7a2 2 0 00-2 2v12a2 2 0 002 2h14a1 1 0 001-1V5a1 1 0 00-1-1zm-1 13H7V6h13v11zM3 18V6a2 2 0 012-2h1V2H5a4 4 0 00-4 4v14a4 4 0 004 4h1v-2H5a2 2 0 01-2-2z"/></svg>
+       <h3 style="font-family:'Noto Kufi Arabic', sans-serif; font-size:20px; margin:5px 0; color:var(--gold-light);">گەشتێک بۆ<br>یادەوەرییەکان</h3>
+       <p style="font-size:13px; opacity:0.8; margin-top:5px; margin-bottom:20px;">ئایا دەتەوێت ئەلبوومەکە بکەیتەوە؟</p>
+       <button class="btn-action btn-secondary" style="width:140px; padding:8px; font-size:14px; pointer-events:none;">کردنەوە 📖</button>
+    </div>`;
+
+    container.innerHTML = html;
+  }
+  initAlbum();
+
+  // Album Turn Functions
+  window.turnPage = function(el) { el.classList.add('turned'); };
+  window.resetAlbum = function(e) {
+    if(e) e.stopPropagation();
+    const pages = Array.from(document.querySelectorAll('.album-page.turned'));
+    pages.reverse().forEach((p, index) => {
+      setTimeout(() => { p.classList.remove('turned'); }, index * 120); // cascading flip back
+    });
+  };
+
+  // Dynamic Particles
   const petalsBox = document.getElementById('petals');
   const particleSets = [
-    ['🎓', '✨', '🌟'], // Cover
-    ['✨', '🩺', '💛'], // Story
-    ['⏳', '✨', '🗓️'], // Timer
-    ['📸', '✨', '🎞️'], // Gallery
-    ['📋', '✨', '🎓'], // Timeline
-    ['🌸', '🌺', '✨'], // Thanks
-    ['🎓', '🎉', '✨']  // Final
+    ['🎓', '✨', '🌟'], ['✨', '🩺', '💛'], ['⏳', '✨', '🗓️'], 
+    ['📸', '✨', '🎞️'], ['📋', '✨', '🎓'], ['🌸', '🌺', '✨'], ['🎓', '🎉', '✨']
   ];
-
   function setParticles(index) {
     petalsBox.innerHTML = '';
     const items = particleSets[index] || particleSets[0];
     for(let i=0; i<20; i++){
       const p = document.createElement('div');
-      p.className = 'petal';
-      p.textContent = items[Math.floor(Math.random()*items.length)];
-      p.style.left = Math.random()*100 + '%';
-      p.style.animationDuration = (5 + Math.random()*7) + 's';
-      p.style.animationDelay = Math.random()*3 + 's';
-      petalsBox.appendChild(p);
+      p.className = 'petal'; p.textContent = items[Math.floor(Math.random()*items.length)];
+      p.style.left = Math.random()*100 + '%'; p.style.animationDuration = (5 + Math.random()*7) + 's';
+      p.style.animationDelay = Math.random()*3 + 's'; petalsBox.appendChild(p);
     }
   }
 
@@ -464,14 +513,12 @@
     });
   }, { threshold:0.6 });
   sections.forEach(s=> observer.observe(s));
-  setParticles(0); // initial load
+  setParticles(0);
 
-  // Countdown Timer
+  // Timer
   const targetDate = new Date('2026-10-08T17:00:00');
   function updateTimer(){
-    const now = new Date();
-    let diff = targetDate - now;
-    if(diff < 0) diff = 0;
+    const now = new Date(); let diff = targetDate - now; if(diff < 0) diff = 0;
     document.getElementById('cd-d').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
     document.getElementById('cd-h').textContent = String(Math.floor((diff % 86400000)/3600000)).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(Math.floor((diff % 3600000)/60000)).padStart(2,'0');
@@ -513,12 +560,10 @@
         revealed = true;
         canvas.style.transition = 'opacity 0.4s ease'; canvas.style.opacity = '0';
         setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400);
-        
         cardsRevealed++;
         if(cardsRevealed === 3) setTimeout(triggerConfetti, 400);
       }
     }
-
     canvas.addEventListener('mousedown', ()=> scratching = true);
     window.addEventListener('mouseup', ()=> scratching = false);
     canvas.addEventListener('mousemove', scratch);
