@@ -191,7 +191,7 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٢. چیرۆکەکە (بە دەقە نوێیەکەی کە هەڵتبژارد) -->
+  <!-- ٢. چیرۆکەکە -->
   <section data-i="1">
     <div class="bg-overlay"></div>
     <div class="inner">
@@ -290,10 +290,10 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٦. کۆتایی، وێنە، شەیرکردن -->
+  <!-- ٦. کۆتایی، وێنە (بە وێنەی سێیەم گۆڕدرا)، شەیرکردن -->
   <section data-i="5">
     <div class="inner">
-      <img src="2.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+      <img src="3.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
       <h1 style="font-size:26px;">چاوەڕێی هاتنتانین</h1>
       <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
       <div class="tagline" style="font-size: 16px; margin: 10px 0 20px;">د. شەنگە شێرزاد — دەرچووی ٢٠٢٦ 🎓</div>
@@ -318,10 +318,21 @@
 </div>
 
 <script>
-  // Loading
+  // Loading & Initial 3D Flip Hint
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if(loader) loader.classList.add('hidden');
+    
+    // Auto-flip hint for the profile card
+    setTimeout(() => {
+      const profileScene = document.getElementById('profileScene');
+      if (profileScene) {
+        profileScene.classList.add('is-flipped');
+        setTimeout(() => {
+          profileScene.classList.remove('is-flipped');
+        }, 1200); // 1.2 seconds later it flips back
+      }
+    }, 400); // Trigger shortly after loader starts fading
   }, 2800);
 
   // Audio Play/Pause
@@ -361,7 +372,7 @@
     scrollProgress.style.width = ((scrollTop / docHeight) * 100) + '%';
   });
 
-  // Flip Profile Card
+  // Flip Profile Card (Manual click)
   const profileScene = document.getElementById('profileScene');
   profileScene.addEventListener('click', () => {
     profileScene.classList.toggle('is-flipped');
