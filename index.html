@@ -95,8 +95,10 @@
   @keyframes ringPulse{ 0%,100%{ opacity:0.4; transform:scale(0.94); } 50%{ opacity:1; transform:scale(1.08); } }
   .sig-title{ font-family:'Noto Kufi Arabic', sans-serif; font-size:16px; color:rgba(251,240,217,0.9); font-weight:700; letter-spacing:.1em; margin-bottom:2px; }
 
-  /* ===== Timer & Action Buttons ===== */
-  .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:20px; }
+  /* ===== Hidden Timer ===== */
+  .hidden-timer { opacity: 0; visibility: hidden; transform: translateY(30px) scale(0.9); max-height: 0; overflow: hidden; transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .hidden-timer.revealed { opacity: 1; visibility: visible; transform: translateY(0) scale(1); max-height: 300px; margin-top: 25px; }
+  .timer-box{ display:flex; justify-content:center; gap:8px; margin-bottom:10px; }
   .t-cell{ background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:8px; padding:8px; width:60px; }
   .t-cell .n{ font-family:'Vazirmatn', sans-serif; font-size:22px; font-weight:800; color:var(--paper); }
   .t-cell .l{ font-family:'Vazirmatn', sans-serif; font-size:11px; opacity:0.85; font-weight:600; }
@@ -210,19 +212,11 @@
     <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
   </section>
 
-  <!-- ٣. کاتژمێر، کارتەکان، نەخشە و ڕۆژژمێر -->
+  <!-- ٣. کارتەکان، نەخشە و کاتژمێرە شاردراوەکە -->
   <section data-i="2">
     <div class="bg-overlay"></div>
     <div class="inner">
-      <div class="eyebrow" style="margin-bottom:15px; font-size:16px;">ژێنەری کات بژێر</div>
-      <div class="timer-box">
-        <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
-        <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
-        <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
-        <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
-      </div>
-
-      <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی زانیارییەکان ✦</div>
+      <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی کات و شوێنی ئاهەنگەکە ✦</div>
       <div class="scratch-grid">
         <div class="scratch-card">
           <div class="scratch-card-content"><div class="k">بەروار</div><div class="v">پێنجشەممە<br>٨ی تشرینی یەکەم</div></div>
@@ -235,6 +229,17 @@
         <div class="scratch-card">
           <div class="scratch-card-content"><div class="k">شوێن</div><div class="v">زانکۆی سلێمانی<br>کەمپی کۆن 📍</div></div>
           <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- کاتژمێرە شاردراوەکە کە دوای سڕینەوە دەردەکەوێت -->
+      <div id="timerContainer" class="hidden-timer">
+        <div class="eyebrow" style="margin-bottom:15px; font-size:16px;">چاوەڕێی ئەو ساتەین... ⏳</div>
+        <div class="timer-box">
+          <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
+          <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
+          <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
+          <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
         </div>
       </div>
 
@@ -332,7 +337,7 @@
           profileScene.classList.remove('is-flipped');
         }, 1200); // 1.2 seconds later it flips back
       }
-    }, 400); // Trigger shortly after loader starts fading
+    }, 400); 
   }, 2800);
 
   // Audio Play/Pause
@@ -403,7 +408,7 @@
   const particleSets = [
     ['🎓', '✨', '🌟'], // Cover
     ['✨', '🩺', '💛'], // Story
-    ['⏳', '✨', '🗓️'], // Timer
+    ['⏳', '✨', '🗓️'], // Timer & Cards
     ['📋', '✨', '🎓'], // Timeline
     ['🌸', '🌺', '✨'], // Thanks
     ['🎓', '🎉', '✨']  // Final
@@ -444,7 +449,7 @@
   }
   setInterval(updateTimer, 1000); updateTimer();
 
-  // Scratch Cards
+  // Scratch Cards and Timer Reveal Logic
   let cardsRevealed = 0;
   document.querySelectorAll('.scratch-card').forEach(card => {
     const canvas = card.querySelector('.scratch-canvas');
@@ -478,8 +483,16 @@
         revealed = true;
         canvas.style.transition = 'opacity 0.4s ease'; canvas.style.opacity = '0';
         setTimeout(() => { canvas.style.pointerEvents = 'none'; }, 400);
+        
         cardsRevealed++;
-        if(cardsRevealed === 3) setTimeout(triggerConfetti, 400);
+        if(cardsRevealed === 3) {
+          // Trigger confetti
+          setTimeout(triggerConfetti, 400);
+          // Show the hidden timer
+          setTimeout(() => {
+            document.getElementById('timerContainer').classList.add('revealed');
+          }, 600);
+        }
       }
     }
     canvas.addEventListener('mousedown', ()=> scratching = true);
