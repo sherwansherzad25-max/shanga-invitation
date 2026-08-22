@@ -43,6 +43,93 @@
   @keyframes pulseText { 0% { opacity: 0.6; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1.02); } }
   .loader-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
+  /* ===== Envelope Reveal Animation ===== */
+  #envelopeOverlay {
+    position: fixed; inset: 0; z-index: 99990;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 1s ease-in-out, visibility 1s;
+  }
+  .envelope-container {
+    position: relative; width: 320px; height: 220px;
+    perspective: 1200px;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+  }
+  .envelope-container.slide-down {
+    transform: translateY(200px) scale(0.9);
+    opacity: 0;
+  }
+  .env-back {
+    position: absolute; inset: 0; background: var(--navy-mid);
+    border: 2px solid var(--gold); border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  }
+  .env-paper {
+    position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+    background: var(--paper); border-radius: 4px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  }
+  .env-front {
+    position: absolute; inset: 0;
+    background: var(--navy); border: 2px solid var(--gold);
+    border-radius: 8px;
+    clip-path: polygon(0 100%, 100% 100%, 100% 40%, 50% 65%, 0 40%);
+    z-index: 4;
+  }
+  .env-flap {
+    position: absolute; top: 0; left: 0; width: 100%; height: 65%;
+    background: var(--navy); border: 2px solid var(--gold);
+    border-top-left-radius: 8px; border-top-right-radius: 8px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+    transform-style: preserve-3d;
+  }
+  .env-flap.open {
+    transform: rotateX(180deg);
+  }
+  .env-seal {
+    position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
+    width: 65px; height: 65px; 
+    background: radial-gradient(circle, #FBF0D9, #D4AF5A);
+    border-radius: 50%; z-index: 6;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.5);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    animation: sealPulse 1.5s infinite alternate;
+    transition: opacity 0.3s ease;
+  }
+  @keyframes sealPulse {
+    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 4px 15px rgba(212,175,90,0.4); }
+    100% { transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 4px 25px rgba(212,175,90,0.8); }
+  }
+  .env-seal svg { 
+    width: 35px; height: 35px; stroke: var(--navy); stroke-width: 2.5; 
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .seal-hint {
+    position: absolute; bottom: -40px; width: 100%; text-align: center;
+    font-family: 'Vazirmatn', sans-serif; font-size: 14px; font-weight: 700; color: var(--gold-light);
+    animation: floatHint 2s infinite ease-in-out;
+  }
+  @keyframes floatHint {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* ===== Main Content Wrapper for Cross-fade ===== */
+  #mainContent {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+    height: 100%;
+  }
+  #mainContent.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   /* ===== Progress & Music ===== */
   .scroll-progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 9998; background: rgba(212,175,90,0.1); }
   .scroll-progress-bar { height: 100%; background: var(--gold); width: 0%; box-shadow: 0 0 10px var(--gold); transition: width 0.2s ease-out; position: relative; }
@@ -148,7 +235,6 @@
 <audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
-<div class="music-btn" id="musicToggle">🔈</div>
 
 <!-- Loading -->
 <div id="loader" class="loader-overlay">
@@ -158,193 +244,243 @@
   <div class="loader-text">د. شەنگە شێرزاد</div>
 </div>
 
-<div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollProgress"></div></div>
-
-<div class="petals-container" id="petals"></div>
-<div class="dots" id="dots">
-  <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
+<!-- Envelope Reveal -->
+<div id="envelopeOverlay">
+  <div class="envelope-container" id="envContainer">
+    <div class="env-back"></div>
+    <div class="env-paper"></div>
+    <div class="env-front"></div>
+    <div class="env-flap" id="envFlap"></div>
+    <div class="env-seal" id="envSeal" onclick="openEnvelope()">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    </div>
+  </div>
+  <div class="seal-hint" id="sealHint">بۆ کردنەوەی نامەکە پەنجە بە لێدانی دڵەکەدا بنێ</div>
 </div>
 
-<div id="scrollArea">
+<!-- Main Content (Hidden Initially) -->
+<div id="mainContent">
+  
+  <div class="music-btn" id="musicToggle">🎵</div>
 
-  <!-- ١. شاشەی سەرەکی (Cover) -->
-  <section data-i="0">
-    <div class="inner">
-      <div class="profile-scene" id="profileScene">
-        <div class="profile-flip-card">
-          <div class="profile-card-face profile-card-front">
-             <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-             <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+  <div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollProgress"></div></div>
+
+  <div class="petals-container" id="petals"></div>
+  <div class="dots" id="dots">
+    <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div id="scrollArea">
+
+    <!-- ١. شاشەی سەرەکی (Cover) -->
+    <section data-i="0">
+      <div class="inner">
+        <div class="profile-scene" id="profileScene">
+          <div class="profile-flip-card">
+            <div class="profile-card-face profile-card-front">
+               <svg class="grad-cap-icon" viewBox="0 0 24 24" fill="#D4AF5A"><path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm6.82 7.82L12 12.91 5.18 9.82 3.27 8.95 12 5l8.73 3.95-1.91.87zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+               <img src="2.jpg" alt="شەنگە شێرزاد" class="profile-img" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+            </div>
+            <div class="profile-card-face profile-card-back">
+              <img src="https://raw.githubusercontent.com/sherwansherzad25-max/shanga-invitation/main/71710.png" alt="Medical Logo" class="profile-img">
+            </div>
           </div>
-          <div class="profile-card-face profile-card-back">
-            <img src="https://raw.githubusercontent.com/sherwansherzad25-max/shanga-invitation/main/71710.png" alt="Medical Logo" class="profile-img">
+        </div>
+        <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
+        <div class="divider">
+          <span class="bar"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <span class="bar"></span>
+        </div>
+        <h1>بانگهێشتنامە</h1>
+        <div class="tagline">ئاهەنگی دەرچوونی پزیشکان</div>
+      </div>
+      <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+    </section>
+
+    <!-- ٢. چیرۆکەکە -->
+    <section data-i="1">
+      <div class="bg-overlay"></div>
+      <div class="inner">
+        <div class="eyebrow" style="font-size:16px;">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
+        <p class="body-text">
+          دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
+          بێگومان گەورەیی و جوانی ئەم یادە تەنها بە ئامادەبوونی میوانە ئازیز و ڕێزدارەکانمانەوە مانای تەواو دەبەخشێت. بەهای سەرکەوتن لەو کەسانەدایە کە لەگەڵماندا بەشی دەکەن، بۆیە بە گەورەیی ئێوەوە ئەم ڕۆژە دەبێتە مێژوویەکی لەبیرنەکراو. بە شانازییەکی زۆرەوە بانگهێشتتان دەکەین، و هاتنتان گەورەترین ڕێزلێنان و دەستخۆشییە بۆ ئێمە.
+        </p>
+        <div class="signature-wrap">
+          <div class="signature-glow-ring"></div>
+          <span class="sig-spark">✦</span>
+          <div><div class="sig-title">د.</div><div class="signature">شەنگە شێرزاد</div></div>
+          <span class="sig-spark two">✦</span>
+        </div>
+      </div>
+      <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+    </section>
+
+    <!-- ٣. کارتەکان، نەخشە و کاتژمێرە شاردراوەکە -->
+    <section data-i="2">
+      <div class="bg-overlay"></div>
+      <div class="inner">
+        <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی کات و شوێنی ئاهەنگەکە ✦</div>
+        <div class="scratch-grid">
+          <div class="scratch-card">
+            <div class="scratch-card-content"><div class="k">بەروار</div><div class="v">پێنجشەممە<br>٨ی تشرینی یەکەم</div></div>
+            <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
+          </div>
+          <div class="scratch-card">
+            <div class="scratch-card-content"><div class="k">کات</div><div class="v">کاتژمێر<br>٥:٠٠ی ئێوارە</div></div>
+            <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
+          </div>
+          <div class="scratch-card">
+            <div class="scratch-card-content"><div class="k">شوێن</div><div class="v">زانکۆی سلێمانی<br>کەمپی کۆن 📍</div></div>
+            <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- کاتژمێرە شاردراوەکە کە دوای سڕینەوە دەردەکەوێت -->
+        <div id="timerContainer" class="hidden-timer">
+          <div class="eyebrow" style="margin-bottom:15px; font-size:16px;">چاوەڕێی ئەو ساتەین... ⏳</div>
+          <div class="timer-box">
+            <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
+            <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
+            <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
+            <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            نەخشەی شوێنی ئاهەنگ
+          </a>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ئاهەنگی+دەرچوونی+دکتۆرە+شەنگە+شێرزاد&dates=20261008T140000Z/20261008T170000Z&details=ئاهەنگی+دەرچوونی+پزیشکان+لە+کەمپی+کۆنی+زانکۆی+سلێمانی&location=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-secondary">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
+            زیادکردن بۆ ڕۆژژمێر
+          </a>
+        </div>
+      </div>
+      <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+    </section>
+
+    <!-- ٤. پڕۆگرامی ئاهەنگەکە (Timeline) -->
+    <section data-i="3">
+      <div class="inner">
+        <div class="eyebrow" style="font-size:18px;">پڕۆگرامی ئاهەنگەکە 📋</div>
+        <div class="timeline">
+          <div class="time-item">
+            <div class="time-hour">٥:٠٠ ئێوارە</div>
+            <div class="time-desc">دەستپێکردنی ئاهەنگ و پێشوازی لە میوانە ئازیزەکان.</div>
+          </div>
+          <div class="time-item">
+            <div class="time-hour">٥:٣٠ ئێوارە</div>
+            <div class="time-desc">ڕێوڕەسمی دەرچوون و وەرگرتنی بڕوانامە.</div>
+          </div>
+          <div class="time-item">
+            <div class="time-hour">٦:٠٠ ئێوارە</div>
+            <div class="time-desc">گرتنی وێنەی یادگاری لەگەڵ خێزان و هاوڕێیان.</div>
+          </div>
+          <div class="time-item">
+            <div class="time-hour">٦:٣٠ ئێوارە</div>
+            <div class="time-desc">کاتێکی خۆش و پێزانین بۆ ئامادەبووان.</div>
           </div>
         </div>
       </div>
-      <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
-      <div class="divider">
-        <span class="bar"></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span class="bar"></span>
-      </div>
-      <h1>بانگهێشتنامە</h1>
-      <div class="tagline">ئاهەنگی دەرچوونی پزیشکان</div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+      <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+    </section>
 
-  <!-- ٢. چیرۆکەکە -->
-  <section data-i="1">
-    <div class="bg-overlay"></div>
-    <div class="inner">
-      <div class="eyebrow" style="font-size:16px;">ساتەوەختی چنینی بەرهەمی ماندووبوون</div>
-      <p class="body-text">
-        دوای ساڵانێک لە هەوڵ، شەونخونی و تێکۆشان لە پێناو پیرۆزترین پیشەی مرۆڤایەتی، بە شانازییەوە گەیشتمە وێستگەی کۆتایی و وەرگرتنی بڕوانامەی پزیشکی.<br><br>
-        بێگومان گەورەیی و جوانی ئەم یادە تەنها بە ئامادەبوونی میوانە ئازیز و ڕێزدارەکانمانەوە مانای تەواو دەبەخشێت. بەهای سەرکەوتن لەو کەسانەدایە کە لەگەڵماندا بەشی دەکەن، بۆیە بە گەورەیی ئێوەوە ئەم ڕۆژە دەبێتە مێژوویەکی لەبیرنەکراو. بە شانازییەکی زۆرەوە بانگهێشتتان دەکەین، و هاتنتان گەورەترین ڕێزلێنان و دەستخۆشییە بۆ ئێمە.
-      </p>
-      <div class="signature-wrap">
-        <div class="signature-glow-ring"></div>
-        <span class="sig-spark">✦</span>
-        <div><div class="sig-title">د.</div><div class="signature">شەنگە شێرزاد</div></div>
-        <span class="sig-spark two">✦</span>
+    <!-- ٥. سوپاس و پێزانین -->
+    <section data-i="4">
+      <div class="inner">
+        <div class="eyebrow" style="font-size:16px;">سوپاس و پێزانین ✦</div>
+        <p class="body-text" style="font-size: 15px; line-height: 2.2; margin-top: 20px;">
+          هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
+          سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
+        </p>
       </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
+      <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
+    </section>
 
-  <!-- ٣. کارتەکان، نەخشە و کاتژمێرە شاردراوەکە -->
-  <section data-i="2">
-    <div class="bg-overlay"></div>
-    <div class="inner">
-      <div class="eyebrow" style="margin-bottom:10px;">بسرەوە بۆ بینینی کات و شوێنی ئاهەنگەکە ✦</div>
-      <div class="scratch-grid">
-        <div class="scratch-card">
-          <div class="scratch-card-content"><div class="k">بەروار</div><div class="v">پێنجشەممە<br>٨ی تشرینی یەکەم</div></div>
-          <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
-        </div>
-        <div class="scratch-card">
-          <div class="scratch-card-content"><div class="k">کات</div><div class="v">کاتژمێر<br>٥:٠٠ی ئێوارە</div></div>
-          <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
-        </div>
-        <div class="scratch-card">
-          <div class="scratch-card-content"><div class="k">شوێن</div><div class="v">زانکۆی سلێمانی<br>کەمپی کۆن 📍</div></div>
-          <div class="scratch-hint-label">بسرەوە</div><canvas class="scratch-canvas"></canvas>
-        </div>
-      </div>
-
-      <!-- کاتژمێرە شاردراوەکە کە دوای سڕینەوە دەردەکەوێت -->
-      <div id="timerContainer" class="hidden-timer">
-        <div class="eyebrow" style="margin-bottom:15px; font-size:16px;">چاوەڕێی ئەو ساتەین... ⏳</div>
-        <div class="timer-box">
-          <div class="t-cell"><div class="n" id="cd-d">00</div><div class="l">ڕۆژ</div></div>
-          <div class="t-cell"><div class="n" id="cd-h">00</div><div class="l">کاتژمێر</div></div>
-          <div class="t-cell"><div class="n" id="cd-m">00</div><div class="l">خولەک</div></div>
-          <div class="t-cell"><div class="n" id="cd-s">00</div><div class="l">چرکە</div></div>
-        </div>
-      </div>
-
-      <div class="btn-group">
-        <a href="https://www.google.com/maps/search/?api=1&query=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-primary">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          نەخشەی شوێنی ئاهەنگ
+    <!-- ٦. کۆتایی، وێنە (بە وێنەی سێیەم گۆڕدرا)، شەیرکردن -->
+    <section data-i="5">
+      <div class="inner">
+        <img src="3.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
+        <h1 style="font-size:26px;">چاوەڕێی هاتنتانین</h1>
+        <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
+        <div class="tagline" style="font-size: 16px; margin: 10px 0 20px;">د. شەنگە شێرزاد — دەرچووی ٢٠٢٦ 🎓</div>
+        
+        <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8E%DA%98%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DB%95%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DB%95%D8%AE%D9%88%D8%A7%D8%B2%D9%85.%20%F0%9F%8C%B9" target="_blank" class="btn-action btn-primary" style="margin-bottom: 20px;">
+          <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          ناردنی پیرۆزبایی
         </a>
-        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ئاهەنگی+دەرچوونی+دکتۆرە+شەنگە+شێرزاد&dates=20261008T140000Z/20261008T170000Z&details=ئاهەنگی+دەرچوونی+پزیشکان+لە+کەمپی+کۆنی+زانکۆی+سلێمانی&location=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-secondary">
-          <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
-          زیادکردن بۆ ڕۆژژمێر
-        </a>
+
+        <div class="divider"><span class="bar"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="bar"></span></div>
+        
+        <!-- Share Buttons -->
+        <div style="font-size: 14px; margin-top: 15px;">هاوبەشکردنی بانگهێشتنامە ↗️</div>
+        <div class="share-box">
+          <a href="#" id="share-wa" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+          <a href="#" id="share-tg" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+          <a href="#" id="share-fb" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+
       </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
-
-  <!-- ٤. پڕۆگرامی ئاهەنگەکە (Timeline) -->
-  <section data-i="3">
-    <div class="inner">
-      <div class="eyebrow" style="font-size:18px;">پڕۆگرامی ئاهەنگەکە 📋</div>
-      <div class="timeline">
-        <div class="time-item">
-          <div class="time-hour">٥:٠٠ ئێوارە</div>
-          <div class="time-desc">دەستپێکردنی ئاهەنگ و پێشوازی لە میوانە ئازیزەکان.</div>
-        </div>
-        <div class="time-item">
-          <div class="time-hour">٥:٣٠ ئێوارە</div>
-          <div class="time-desc">ڕێوڕەسمی دەرچوون و وەرگرتنی بڕوانامە.</div>
-        </div>
-        <div class="time-item">
-          <div class="time-hour">٦:٠٠ ئێوارە</div>
-          <div class="time-desc">گرتنی وێنەی یادگاری لەگەڵ خێزان و هاوڕێیان.</div>
-        </div>
-        <div class="time-item">
-          <div class="time-hour">٦:٣٠ ئێوارە</div>
-          <div class="time-desc">کاتێکی خۆش و پێزانین بۆ ئامادەبووان.</div>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
-
-  <!-- ٥. سوپاس و پێزانین -->
-  <section data-i="4">
-    <div class="inner">
-      <div class="eyebrow" style="font-size:16px;">سوپاس و پێزانین ✦</div>
-      <p class="body-text" style="font-size: 15px; line-height: 2.2; margin-top: 20px;">
-        هەموو سەرکەوتنێک چیرۆکێکی مەزنی لە پشتە... بەڵام چیرۆکی من بەبێ پشتگیرییە بێسنوورەکانی دایک و باوکم و خێزانەکەم نەدەنووسرا.<br><br>
-        سوپاس بۆ ئەو شەونخونی و ماندووبوونەی لە پێناومدا کێشاتان، سوپاس کە هەمیشە چرای ڕووناکی ڕێگاکەم بوون لەم قۆناغە سەختەدا. ئەم سەرکەوتنە پێش ئەوەی هی من بێت، بەرهەمی ڕەنجی ئێوەیە و تاجێکە لەسەر سەرم.
-      </p>
-    </div>
-    <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
-  </section>
-
-  <!-- ٦. کۆتایی، وێنە (بە وێنەی سێیەم گۆڕدرا)، شەیرکردن -->
-  <section data-i="5">
-    <div class="inner">
-      <img src="3.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
-      <h1 style="font-size:26px;">چاوەڕێی هاتنتانین</h1>
-      <p class="body-text" style="margin-bottom: 5px;">بە هاتنتان خۆشحاڵیمان تەواو دەکەن.</p>
-      <div class="tagline" style="font-size: 16px; margin: 10px 0 20px;">د. شەنگە شێرزاد — دەرچووی ٢٠٢٦ 🎓</div>
-      
-      <a href="https://t.me/shany_y?text=%D8%B3%DA%B5%D8%A7%D9%88%20%D8%AF%DA%A9%D8%AA%DB%86%D8%B1%D9%87%20%D8%B4%DB%95%D9%86%DA%AF%DB%95%D8%8C%20%D8%A8%DB%95%D8%A8%DB%86%D9%86%DB%95%DB%8C%20%D8%AA%DB%95%D9%88%D8%A7%D9%88%DA%A9%D8%B1%D8%AF%D9%86%DB%8C%20%DA%A9%DB%86%D9%84%DB%8E%DA%98%DB%8C%20%D9%BE%D8%B2%DB%8C%D8%B4%DA%A9%DB%8C%DB%8C%DB%95%D9%88%DB%95%20%DA%AF%DB%95%D8%B1%D9%85%D8%AA%D8%B1%DB%8C%D9%86%20%D9%BE%DB%8C%D8%B1%DB%86%D8%B2%D8%A8%D8%A7%DB%8C%DB%8C%D8%AA%20%D9%84%DB%8C%20%D8%AF%DB%95%DA%A9%DB%95%D9%85%20%D9%88%20%D9%87%DB%8C%D9%88%D8%A7%DB%8C%20%D8%B3%DB%95%D8%B1%DA%A9%DB%95%D9%88%D8%AA%D9%86%D8%AA%20%D8%A8%DB%86%20%D8%AF%DB%95%D8%AE%D9%88%D8%A7%D8%B2%D9%85.%20%F0%9F%8C%B9" target="_blank" class="btn-action btn-primary" style="margin-bottom: 20px;">
-        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        ناردنی پیرۆزبایی
-      </a>
-
-      <div class="divider"><span class="bar"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="bar"></span></div>
-      
-      <!-- Share Buttons -->
-      <div style="font-size: 14px; margin-top: 15px;">هاوبەشکردنی بانگهێشتنامە ↗️</div>
-      <div class="share-box">
-        <a href="#" id="share-wa" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-        <a href="#" id="share-tg" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
-        <a href="#" id="share-fb" target="_blank" class="share-circle"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-      </div>
-
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 
 <script>
-  // Loading & Initial 3D Flip Hint
+  let isPlaying = false;
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+
+  // Loading Screen -> Show Envelope
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if(loader) loader.classList.add('hidden');
-    
-    // Auto-flip hint for the profile card
-    setTimeout(() => {
-      const profileScene = document.getElementById('profileScene');
-      if (profileScene) {
-        profileScene.classList.add('is-flipped');
-        setTimeout(() => {
-          profileScene.classList.remove('is-flipped');
-        }, 1200); // 1.2 seconds later it flips back
-      }
-    }, 400); 
-  }, 2800);
+  }, 2500);
 
-  // Audio Play/Pause
-  const bgMusic = document.getElementById('bgMusic');
-  const musicToggle = document.getElementById('musicToggle');
-  let isPlaying = false;
-  
+  // Open Envelope Animation
+  function openEnvelope() {
+    const seal = document.getElementById('envSeal');
+    const hint = document.getElementById('sealHint');
+    const flap = document.getElementById('envFlap');
+    const envContainer = document.getElementById('envContainer');
+    const overlay = document.getElementById('envelopeOverlay');
+    const mainContent = document.getElementById('mainContent');
+
+    // Play music immediately upon click
+    if (!isPlaying) {
+      bgMusic.play().catch(e => console.log("Audio play failed:", e));
+      musicToggle.classList.add('playing');
+      isPlaying = true;
+    }
+
+    // Step 1: Hide seal & hint, open flap
+    seal.style.opacity = '0';
+    hint.style.opacity = '0';
+    flap.classList.add('open');
+
+    // Step 2: Slide down & Cross-fade to main content
+    setTimeout(() => {
+      envContainer.classList.add('slide-down');
+      overlay.style.opacity = '0';
+      mainContent.classList.add('visible');
+      
+      // Step 3: Remove envelope from DOM and trigger the 3D Profile Flip
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        const profileScene = document.getElementById('profileScene');
+        if (profileScene) {
+          profileScene.classList.add('is-flipped');
+          setTimeout(() => {
+            profileScene.classList.remove('is-flipped');
+          }, 1200);
+        }
+      }, 1000); // Matches CSS transition time
+    }, 600); // Wait for flap to open
+  }
+
+  // Audio Play/Pause Button Logic
   function toggleMusic() {
     if (isPlaying) {
       bgMusic.pause();
@@ -357,9 +493,7 @@
     }
     isPlaying = !isPlaying;
   }
-  
   musicToggle.addEventListener('click', toggleMusic);
-  document.body.addEventListener('click', () => { if(!isPlaying) toggleMusic(); }, { once: true });
 
   // Share Links
   const pageUrl = window.location.href;
