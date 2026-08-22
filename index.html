@@ -25,115 +25,128 @@
     overflow:hidden;
   }
 
-  /* ===== Loading Screen ===== */
-  .loader-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--navy); z-index: 99999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
-  }
-  .ecg-loader { 
-    width: 150px; height: 70px; stroke: var(--gold); fill: none; 
-    stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; 
-    stroke-dasharray: 300; stroke-dashoffset: 300; 
-    animation: drawEcg 2.5s ease-in-out infinite; 
-  }
-  @keyframes drawEcg { 0% { stroke-dashoffset: 300; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -300; } }
-  .loader-text { font-family: 'Noto Kufi Arabic', sans-serif; font-size: 26px; font-weight: 800; color: var(--gold); margin-top: 20px; text-shadow: 0 0 15px rgba(212,175,90,0.4); animation: pulseText 1.5s infinite alternate; }
-  @keyframes pulseText { 0% { opacity: 0.6; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1.02); } }
-  .loader-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-  /* ===== Envelope Reveal Animation ===== */
+  /* ===== Pure CSS & SVG Envelope ===== */
   #envelopeOverlay {
     position: fixed; inset: 0; z-index: 99990;
-    background: var(--navy);
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity 1s ease-in-out, visibility 1s;
+    background: radial-gradient(circle at center, #1a3854 0%, #0a1b2b 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 1.2s ease-in-out, visibility 1.2s;
+    perspective: 1500px;
   }
-  .envelope-container {
-    position: relative; width: 320px; height: 220px;
-    perspective: 1200px;
+  #envelopeOverlay.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+  
+  .env-wrapper {
+    position: relative; width: 340px; height: 240px;
     transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+    transform-style: preserve-3d;
+    animation: floatEnv 4s ease-in-out infinite;
   }
-  .envelope-container.slide-down {
-    transform: translateY(200px) scale(0.9);
+  @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  
+  .env-wrapper.slide-down {
+    animation: none;
+    transform: translateY(250px) scale(0.85);
     opacity: 0;
   }
+
+  /* Back of envelope */
   .env-back {
-    position: absolute; inset: 0; background: var(--navy-mid);
-    border: 2px solid var(--gold); border-radius: 8px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-  }
-  .env-paper {
-    position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
-    background: var(--paper); border-radius: 4px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-  }
-  .env-front {
     position: absolute; inset: 0;
-    background: var(--navy); border: 2px solid var(--gold);
-    border-radius: 8px;
-    clip-path: polygon(0 100%, 100% 100%, 100% 40%, 50% 65%, 0 40%);
-    z-index: 4;
+    background: #0f263d;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
-  .env-flap {
-    position: absolute; top: 0; left: 0; width: 100%; height: 65%;
-    background: var(--navy); border: 2px solid var(--gold);
-    border-top-left-radius: 8px; border-top-right-radius: 8px;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* The Invitation Card inside */
+  .env-card {
+    position: absolute; top: 10px; left: 15px; right: 15px; bottom: 15px;
+    background: var(--paper); border-radius: 4px;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; align-items: center; padding-top: 25px;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+  }
+  .env-card-gold-line { width: 80%; height: 2px; background: var(--gold); margin-bottom: 8px; border-radius: 2px; }
+  .env-card-title { font-family: 'Noto Kufi Arabic', sans-serif; font-size: 18px; color: var(--navy); font-weight: 800; }
+
+  /* Front Bottom Pocket */
+  .env-front {
+    position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  }
+  
+  /* Top Flap Container */
+  .env-flap-container {
+    position: absolute; top: 0; left: 0; width: 100%; height: 160px;
+    transform-origin: top center;
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 5;
     transform-style: preserve-3d;
   }
-  .env-flap.open {
+  .env-flap-container.open { transform: rotateX(180deg); }
+
+  /* Flap Front and Back faces for realism */
+  .flap-front, .flap-back {
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .flap-back {
     transform: rotateX(180deg);
-  }
-  .env-seal {
-    position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
-    width: 65px; height: 65px; 
-    background: radial-gradient(circle, #FBF0D9, #D4AF5A);
-    border-radius: 50%; z-index: 6;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.5);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    animation: sealPulse 1.5s infinite alternate;
-    transition: opacity 0.3s ease;
-  }
-  @keyframes sealPulse {
-    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 4px 15px rgba(212,175,90,0.4); }
-    100% { transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 4px 25px rgba(212,175,90,0.8); }
-  }
-  .env-seal svg { 
-    width: 35px; height: 35px; stroke: var(--navy); stroke-width: 2.5; 
-    fill: none; stroke-linecap: round; stroke-linejoin: round;
-  }
-  .seal-hint {
-    position: absolute; bottom: -40px; width: 100%; text-align: center;
-    font-family: 'Vazirmatn', sans-serif; font-size: 14px; font-weight: 700; color: var(--gold-light);
-    animation: floatHint 2s infinite ease-in-out;
-  }
-  @keyframes floatHint {
-    0%, 100% { transform: translateY(0); opacity: 0.7; }
-    50% { transform: translateY(-5px); opacity: 1; }
+    background: #0f263d; 
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
 
-  /* ===== Main Content Wrapper for Cross-fade ===== */
+  /* Red Wax Seal (Classic) */
+  .wax-seal {
+    position: absolute; top: 155px; left: 50%; transform: translate(-50%, -50%);
+    width: 65px; height: 65px;
+    background: radial-gradient(circle at 35% 35%, #9B1B1B 0%, #680E0E 50%, #3B0606 100%);
+    border-radius: 50%; z-index: 10;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 0 5px rgba(255,255,255,0.2), inset 0 0 10px rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.5s ease, transform 0.3s ease;
+  }
+  .wax-seal:hover { transform: translate(-50%, -50%) scale(1.05); }
+  
+  .wax-seal .seal-inner {
+    width: 50px; height: 50px; border-radius: 50%;
+    border: 1.5px solid rgba(212,175,90,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Times New Roman', serif; font-size: 24px; font-weight: bold; 
+    color: var(--gold); letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .seal-hint {
+    margin-top: 50px; font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: 700; color: var(--gold-light);
+    animation: floatHint 2s infinite ease-in-out; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  @keyframes floatHint { 0%, 100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(-5px); opacity: 1; } }
+
+  /* ===== Main Content Wrapper ===== */
   #mainContent {
-    opacity: 0;
-    transform: scale(0.92);
+    opacity: 0; transform: scale(0.95);
     transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
     height: 100%;
   }
-  #mainContent.visible {
-    opacity: 1;
-    transform: scale(1);
+  #mainContent.visible { opacity: 1; transform: scale(1); }
+
+  /* ===== The Original Heartbeat Animation inside the card ===== */
+  .ecg-loader-main { 
+    width: 130px; height: 60px; stroke: var(--gold); fill: none; 
+    stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; 
+    stroke-dasharray: 300; stroke-dashoffset: 300; 
+    margin: 5px auto 15px; display: block;
+    filter: drop-shadow(0 0 10px rgba(212,175,90,0.5));
   }
+  #mainContent.visible .ecg-loader-main {
+    animation: drawEcg 2.5s ease-in-out infinite; 
+    animation-delay: 1s; /* Starts beautifully after envelope slides down */
+  }
+  @keyframes drawEcg { 0% { stroke-dashoffset: 300; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -300; } }
 
   /* ===== Progress & Music ===== */
   .scroll-progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 9998; background: rgba(212,175,90,0.1); }
   .scroll-progress-bar { height: 100%; background: var(--gold); width: 0%; box-shadow: 0 0 10px var(--gold); transition: width 0.2s ease-out; position: relative; }
-  .scroll-progress-bar::after { content: ''; position: absolute; right: -2px; top: -2px; width: 8px; height: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 20px var(--gold); }
   
   .music-btn { position: fixed; top: 15px; right: 15px; z-index: 9997; width: 42px; height: 42px; border-radius: 50%; background: rgba(16,42,67,0.8); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); box-shadow: 0 0 15px rgba(0,0,0,0.3); backdrop-filter: blur(5px); cursor: pointer; transition: transform 0.2s; }
   .music-btn:active { transform: scale(0.9); }
@@ -161,9 +174,6 @@
   /* ===== Typography & Layout ===== */
   .eyebrow{ font-family:'Noto Kufi Arabic', sans-serif; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:.02em; }
   .eyebrow .sub{ display:block; margin-top:3px; font-size:12px; font-weight:600; opacity:0.85; }
-  .divider{ display:flex; align-items:center; justify-content:center; gap:0px; margin:15px auto; }
-  .divider .bar{ width:40px; height:1px; background:var(--gold); }
-  .divider svg{ width:35px; margin:0 8px; color:var(--gold); }
   h1{ font-family:'Noto Kufi Arabic', sans-serif; font-weight:800; font-size:38px; line-height:1.4; margin:5px 0; color:var(--paper); text-shadow:0 0 20px rgba(212,175,90,0.4); }
   .tagline{ font-family:'Noto Kufi Arabic', sans-serif; font-size:20px; color:var(--gold-light); font-weight:700; }
   .body-text{ font-family:'Vazirmatn', sans-serif; font-size:15px; font-weight:600; line-height:2.2; color:rgba(250,248,245,0.95); margin:15px auto; }
@@ -236,33 +246,56 @@
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Loading -->
-<div id="loader" class="loader-overlay">
-  <svg class="ecg-loader" viewBox="0 0 150 70">
-    <polyline points="0,35 20,35 30,15 45,60 65,5 80,45 90,35 150,35" />
-  </svg>
-  <div class="loader-text">د. شەنگە شێرزاد</div>
-</div>
-
-<!-- Envelope Reveal -->
+<!-- VIP Pure CSS Envelope Overlay (NO LOADING SCREEN) -->
 <div id="envelopeOverlay">
-  <div class="envelope-container" id="envContainer">
+  
+  <div class="env-wrapper" id="envWrapper">
+    <!-- Back of the envelope -->
     <div class="env-back"></div>
-    <div class="env-paper"></div>
-    <div class="env-front"></div>
-    <div class="env-flap" id="envFlap"></div>
-    <div class="env-seal" id="envSeal" onclick="openEnvelope()">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    
+    <!-- The Invitation Card peeking out -->
+    <div class="env-card" id="envCard">
+      <div class="env-card-gold-line"></div>
+      <div class="env-card-title">د. شەنگە شێرزاد</div>
+      <div style="font-family:'Vazirmatn'; font-size:12px; color:#555; margin-top:5px;">بانگهێشتنامەی دەرچوون</div>
+    </div>
+    
+    <!-- Front Pockets of the envelope -->
+    <div class="env-front">
+      <svg width="100%" height="100%" viewBox="0 0 340 240" preserveAspectRatio="none">
+        <polygon points="0,0 0,240 170,145" fill="#14304c" stroke="#D4AF5A" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="340,0 340,240 170,145" fill="#14304c" stroke="#D4AF5A" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="0,240 340,240 170,125" fill="#173656" stroke="#D4AF5A" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="12,230 328,230 170,135" fill="none" stroke="rgba(212,175,90,0.5)" stroke-width="1"/>
+      </svg>
+    </div>
+    
+    <!-- Top Flap Container (Rotates on Open) -->
+    <div class="env-flap-container" id="envFlap">
+      <div class="flap-front">
+        <svg width="100%" height="100%" viewBox="0 0 340 160" preserveAspectRatio="none">
+          <polygon points="0,0 340,0 170,155" fill="#173656" stroke="#D4AF5A" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="10,0 330,0 170,143" fill="none" stroke="rgba(212,175,90,0.5)" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="flap-back"></div>
+    </div>
+
+    <!-- The Red Wax Seal without ECG -->
+    <div class="wax-seal" id="waxSeal" onclick="openEnvelope()">
+      <div class="seal-inner">
+        Dr
+      </div>
     </div>
   </div>
-  <div class="seal-hint" id="sealHint">بۆ کردنەوەی نامەکە پەنجە بە لێدانی دڵەکەدا بنێ</div>
+  
+  <div class="seal-hint" id="sealHint">بۆ کردنەوەی نامەکە پەنجە بە مۆرەکەدا بنێ 👆</div>
 </div>
 
 <!-- Main Content (Hidden Initially) -->
 <div id="mainContent">
   
   <div class="music-btn" id="musicToggle">🎵</div>
-
   <div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollProgress"></div></div>
 
   <div class="petals-container" id="petals"></div>
@@ -287,11 +320,12 @@
           </div>
         </div>
         <div class="eyebrow">زانکۆی سلێمانی<span class="sub">کۆلێژی پزیشکی</span></div>
-        <div class="divider">
-          <span class="bar"></span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          <span class="bar"></span>
-        </div>
+        
+        <!-- The Original ECG Heartbeat Animation (Revealed here) -->
+        <svg class="ecg-loader-main" viewBox="0 0 150 70">
+          <polyline points="0,35 20,35 30,15 45,60 65,5 80,45 90,35 150,35" />
+        </svg>
+
         <h1>بانگهێشتنامە</h1>
         <div class="tagline">ئاهەنگی دەرچوونی پزیشکان</div>
       </div>
@@ -354,7 +388,7 @@
             نەخشەی شوێنی ئاهەنگ
           </a>
           <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=ئاهەنگی+دەرچوونی+دکتۆرە+شەنگە+شێرزاد&dates=20261008T140000Z/20261008T170000Z&details=ئاهەنگی+دەرچوونی+پزیشکان+لە+کەمپی+کۆنی+زانکۆی+سلێمانی&location=University+of+Sulaimani+Old+Campus" target="_blank" class="btn-action btn-secondary">
-            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.9-2 2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
             زیادکردن بۆ ڕۆژژمێر
           </a>
         </div>
@@ -400,7 +434,7 @@
       <div class="scroll-hint">بۆ خوارەوە بگەڕێ ⌄</div>
     </section>
 
-    <!-- ٦. کۆتایی، وێنە (بە وێنەی سێیەم گۆڕدرا)، شەیرکردن -->
+    <!-- ٦. کۆتایی، وێنە، شەیرکردن -->
     <section data-i="5">
       <div class="inner">
         <img src="3.jpg" alt="Dr. Shanga" class="final-photo" onerror="this.src='https://via.placeholder.com/150/244E75/FFFFFF?text=Doctor'">
@@ -430,43 +464,50 @@
 
 <script>
   let isPlaying = false;
+  let envelopeOpened = false;
   const bgMusic = document.getElementById('bgMusic');
   const musicToggle = document.getElementById('musicToggle');
 
-  // Loading Screen -> Show Envelope
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    if(loader) loader.classList.add('hidden');
-  }, 2500);
-
-  // Open Envelope Animation
+  // The Magic Opening Animation
   function openEnvelope() {
-    const seal = document.getElementById('envSeal');
+    if (envelopeOpened) return;
+    envelopeOpened = true;
+    
+    const seal = document.getElementById('waxSeal');
     const hint = document.getElementById('sealHint');
     const flap = document.getElementById('envFlap');
-    const envContainer = document.getElementById('envContainer');
+    const card = document.getElementById('envCard');
+    const envWrapper = document.getElementById('envWrapper');
     const overlay = document.getElementById('envelopeOverlay');
     const mainContent = document.getElementById('mainContent');
 
-    // Play music immediately upon click
+    // 1. Play music immediately
     if (!isPlaying) {
       bgMusic.play().catch(e => console.log("Audio play failed:", e));
       musicToggle.classList.add('playing');
       isPlaying = true;
     }
 
-    // Step 1: Hide seal & hint, open flap
+    // 2. Hide seal and hint
     seal.style.opacity = '0';
+    seal.style.transform = 'translate(-50%, -50%) scale(0.5)';
     hint.style.opacity = '0';
+
+    // 3. Open the top flap
     flap.classList.add('open');
 
-    // Step 2: Slide down & Cross-fade to main content
+    // 4. Slide the card slightly up after flap opens
     setTimeout(() => {
-      envContainer.classList.add('slide-down');
-      overlay.style.opacity = '0';
+      card.style.transform = 'translateY(-35px)';
+    }, 500);
+
+    // 5. Slide whole envelope down and fade out
+    setTimeout(() => {
+      envWrapper.classList.add('slide-down');
+      overlay.classList.add('fade-out');
       mainContent.classList.add('visible');
       
-      // Step 3: Remove envelope from DOM and trigger the 3D Profile Flip
+      // 6. 3D flip card hint in main content
       setTimeout(() => {
         overlay.style.display = 'none';
         const profileScene = document.getElementById('profileScene');
@@ -476,11 +517,11 @@
             profileScene.classList.remove('is-flipped');
           }, 1200);
         }
-      }, 1000); // Matches CSS transition time
-    }, 600); // Wait for flap to open
+      }, 1000); 
+    }, 1300); 
   }
 
-  // Audio Play/Pause Button Logic
+  // Audio Play/Pause
   function toggleMusic() {
     if (isPlaying) {
       bgMusic.pause();
@@ -511,7 +552,7 @@
     scrollProgress.style.width = ((scrollTop / docHeight) * 100) + '%';
   });
 
-  // Flip Profile Card (Manual click)
+  // Flip Profile Card
   const profileScene = document.getElementById('profileScene');
   profileScene.addEventListener('click', () => {
     profileScene.classList.toggle('is-flipped');
@@ -583,7 +624,7 @@
   }
   setInterval(updateTimer, 1000); updateTimer();
 
-  // Scratch Cards and Timer Reveal Logic
+  // Scratch Cards and Timer Reveal
   let cardsRevealed = 0;
   document.querySelectorAll('.scratch-card').forEach(card => {
     const canvas = card.querySelector('.scratch-canvas');
@@ -620,12 +661,8 @@
         
         cardsRevealed++;
         if(cardsRevealed === 3) {
-          // Trigger confetti
           setTimeout(triggerConfetti, 400);
-          // Show the hidden timer
-          setTimeout(() => {
-            document.getElementById('timerContainer').classList.add('revealed');
-          }, 600);
+          setTimeout(() => { document.getElementById('timerContainer').classList.add('revealed'); }, 600);
         }
       }
     }
